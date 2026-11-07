@@ -26,7 +26,7 @@ runs:
         echo "COMPILE_R7RS=${{env.COMPILE_R7RS}}" >> $GITHUB_ENV
 
     - name: Install capy
-      if: ${{env.COMPILE_R7RS}} == capyscheme
+      if: env.COMPILE_R7RS == capyscheme
       shell: bash
       run: |
           VERSION=3.1.0
@@ -36,7 +36,7 @@ runs:
           sudo ln -sf /opt/capy/capy /usr/local/bin/capy
 
     - name: Install chez
-      if: ${{env.COMPILE_R7RS}} == chezscheme
+      if: env.COMPILE_R7RS == chezscheme
       shell: bash
       run: |
           VERSION=10.4.1
