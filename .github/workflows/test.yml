@@ -12,7 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Install test dependencies
-        uses: "./.github/actions/${{ matrix.scheme }}"
+        uses: ./.github/actions/compile-r7rs
+        env:
+          COMPILE_R7RS: "${{ matrix.scheme }}"
       - name: test
         run: |
           compile-r7rs -o hello-world hello-world.scm
