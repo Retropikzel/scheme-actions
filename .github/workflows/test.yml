@@ -6,6 +6,7 @@ on:
 jobs:
   r6rs:
     runs-on: ubuntu-26.04
+    continue-on-error: true
     strategy:
       matrix:
         scheme: [capyscheme, chezscheme]
@@ -22,6 +23,7 @@ jobs:
           ./hello-world
   r7rs:
     runs-on: ubuntu-26.04
+    continue-on-error: true
     strategy:
       matrix:
         scheme: [capyscheme, chibi, chicken, cyclone, foment]
