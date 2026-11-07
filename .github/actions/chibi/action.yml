@@ -2,7 +2,7 @@ name: chibi-ubuntu
 runs:
   using: composite
   steps:
-    - name: Install chibi-shcmee
+    - name: Install chibi
       shell: bash
       run: |
         git clone https://github.com/ashinn/chibi-scheme.git --depth=1
