@@ -44,7 +44,7 @@ runs:
         else
           cd chibi-scheme
         fi
-        sudo make install
+        sudo make -j 8 install
         mkdir -p ~/.snow && echo "()" > ~/.snow/config.scm
 
     - uses: actions/cache/save@v5
@@ -161,11 +161,11 @@ runs:
             wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v${{inputs.cyclone_version}}.tar.gz
             tar -xf v${{inputs.cyclone_version}}.tar.gz
             cd cyclone-bootstrap-${{inputs.cyclone_version}}
-            make
+            make CC=gcc-14
           else
             cd cyclone-bootstrap-${{inputs.cyclone_version}}
           fi
-          sudo make install
+          sudo make CC=gcc-14 install
 
     - uses: actions/cache/save@v5
       if: ${{ inputs.COMPILE_R7RS  == 'chicken' }}
