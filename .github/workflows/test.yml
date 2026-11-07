@@ -6,7 +6,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-26.04
-    stategy:
+    strategy:
       matrix:
         scheme: [capy, chibi]
     steps:
