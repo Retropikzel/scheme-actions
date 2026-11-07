@@ -12,7 +12,7 @@ jobs:
         scheme: [capyscheme, chezscheme]
     steps:
       - uses: actions/checkout@v6
-      - name: Install test dependencies
+      - name: Init the test environment
         uses: ./.github/actions/compile-r7rs
         with:
           COMPILE_R7RS: "${{ matrix.scheme }}"
@@ -29,7 +29,7 @@ jobs:
         scheme: [capyscheme, chibi, chicken, cyclone, foment]
     steps:
       - uses: actions/checkout@v6
-      - name: Install test dependencies
+      - name: Init the test environment
         uses: ./.github/actions/compile-r7rs
         with:
           COMPILE_R7RS: "${{ matrix.scheme }}"
