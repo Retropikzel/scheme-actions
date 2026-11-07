@@ -4,11 +4,11 @@ inputs:
     description: The Scheme implementation to use
     required: true
   capy_version:
-    default: 3.1.0
+    default: "3.1.0"
   chez_version:
-    default: 10.4.1
+    default: "10.4.1"
   cyclone_version:
-    default: 0.36.0
+    default: "0.36.0"
 runs:
   using: composite
   steps:
@@ -46,7 +46,7 @@ runs:
         path: /opt/capy
         key: capy
 
-    - name: Install capy (${{env.capy_version}})
+    - name: Install capy (env.capy_version)
       if: env.COMPILE_R7RS == 'capyscheme'
       shell: sh
       run: |
@@ -72,7 +72,7 @@ runs:
         path: /opt/chez
         key: chez
 
-    - name: Install chez (${{env.chez_version}})
+    - name: Install chez (env.chez_version)
       if: env.COMPILE_R7RS == 'chezscheme'
       shell: sh
       run: |
@@ -100,7 +100,7 @@ runs:
         path: /opt/chicken
         key: chicken
 
-    - name: Install chicken (${{env.chicken_version}})
+    - name: Install chicken (env.chicken_version)
       if: env.COMPILE_R7RS == 'chicken'
       shell: sh
       run: |
@@ -128,7 +128,7 @@ runs:
         path: /opt/cyclone
         key: cyclone
 
-    - name: Install cyclone (${{env.cyclone_version}})
+    - name: Install cyclone (env.cyclone_version)
       if: env.COMPILE_R7RS == 'cyclone'
       shell: sh
       run: |
