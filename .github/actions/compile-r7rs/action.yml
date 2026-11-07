@@ -98,7 +98,7 @@ runs:
             wget https://github.com/cisco/ChezScheme/releases/download/v${{inputs.chez_version}}/csv${{inputs.chez_version}}.tar.gz
             tar -xf csv${{inputs.chez_version}}.tar.gz
             cd csv${{inputs.chez_version}}
-            ./configure --prefix=/usr/local
+            ./configure --prefix=/usr/local --disable-x11 --disable-curses --disable-iconv
             make
           else
             cd csv${{inputs.chez_version}}
