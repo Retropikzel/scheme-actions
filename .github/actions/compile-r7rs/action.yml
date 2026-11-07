@@ -3,10 +3,14 @@ inputs:
   COMPILE_R7RS:
     description: The Scheme implementation to use
     required: true
-  chibi_version: head
-  capy_version: 3.1.0
-  chez_version: 10.4.1
-  cyclone_version: 0.36.0
+  chibi_version:
+    default: head
+  capy_version:
+    default: 3.1.0
+  chez_version:
+    default: 10.4.1
+  cyclone_version:
+    default: 0.36.0
   foment_version: head
 runs:
   using: composite
