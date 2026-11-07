@@ -25,15 +25,39 @@ runs:
       run: |
         echo "COMPILE_R7RS=${{env.COMPILE_R7RS}}" >> $GITHUB_ENV
 
+    - uses: actions/cache/restore@v5
+      id: capy-restore
+      with:
+        path: /opt/capy
+        key: capy
+
     - name: Install capy
       if: env.COMPILE_R7RS == 'capyscheme'
       shell: bash
+      working-directory: /opt/capy
       run: |
           VERSION=3.1.0
-          wget https://github.com/playX18/capyscheme/releases/download/v${VERSION}/capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
-          tar -xf capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
+          if [ -f capy ]; then
+            wget https://github.com/playX18/capyscheme/releases/download/v${VERSION}/capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
+            tar -xf capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
+          fi
           cp -r capy/${VERSION} /opt/capy
           sudo ln -sf /opt/capy/capy /usr/local/bin/capy
+
+    - uses: actions/cache/save@v5
+      id: capy-save
+      with:
+        path: /opt/capy
+        key: capy
+
+    - name: Cache capy
+      id: cache-capy
+      uses: actions/cache@v6
+      with:
+        path:
+          - /opt/capy
+          - /usr/local/bin/capy
+        key: capy
 
     - name: Install chez
       if: env.COMPILE_R7RS == 'chezscheme'
