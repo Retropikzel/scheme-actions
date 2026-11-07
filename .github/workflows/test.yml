@@ -4,7 +4,23 @@ on:
   pull_request:
 
 jobs:
-  test:
+  r6rs:
+    runs-on: ubuntu-26.04
+    strategy:
+      matrix:
+        scheme: [capyscheme, chezscheme]
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install test dependencies
+        uses: ./.github/actions/compile-r7rs
+        env:
+          COMPILE_R7RS: "${{ matrix.scheme }}"
+      - name: test
+        continue-on-error: true
+        run: |
+          compile-r7rs -o hello-world hello-world.sps
+          ./hello-world
+  r7rs:
     runs-on: ubuntu-26.04
     strategy:
       matrix:

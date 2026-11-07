@@ -26,7 +26,7 @@ runs:
         echo "COMPILE_R7RS=${{env.COMPILE_R7RS}}" >> $GITHUB_ENV
 
     - name: Install capy
-      if: ${{env.COMPILE_R7RS}} == capy
+      if: ${{env.COMPILE_R7RS}} == capyscheme
       shell: bash
       run: |
           VERSION=3.1.0
@@ -34,3 +34,15 @@ runs:
           tar -xf capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
           cp -r capy/${VERSION} /opt/capy
           sudo ln -sf /opt/capy/capy /usr/local/bin/capy
+
+    - name: Install chez
+      if: ${{env.COMPILE_R7RS}} == chezscheme
+      shell: bash
+      run: |
+          VERSION=10.4.1
+          wget https://github.com/cisco/ChezScheme/releases/download/v${VERSION}/csv${VERSION}.tar.gz
+          tar -xf csv${VERSION}.tar.gz
+          cd csv${VERSION}
+          ./configure --prefix=/usr/local
+          make
+          sudo make install
