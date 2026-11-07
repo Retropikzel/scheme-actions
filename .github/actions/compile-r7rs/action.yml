@@ -294,6 +294,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
       shell: sh
       run: |
+        sudo apt install -y libunistring-dev
         file_version=$(echo "${{inputs.guile_version}}" | tr '.' '_')
         if [ ! -d gambit-${{inputs.gambit_version}} ]; then
           wget https://ftp.gnu.org/gnu/guile/guile-3.0.11.tar.gz
