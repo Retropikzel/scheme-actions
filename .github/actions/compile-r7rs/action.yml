@@ -115,10 +115,10 @@ runs:
         mkdir -p /opt/chicken
         cd /opt/chicken
         if [ ! -d chicken ]; then
-          wget https://code.call-cc.org/releases/${chicken_version}/chicken-${chicken_version}.tar.gz
-          tar -xf chiken-${chicken_version}
+          wget https://code.call-cc.org/releases/${{inputs.chicken_version}}/chicken-${{inputs.chicken_version}}.tar.gz
+          tar -xf chiken-${{inputs.chicken_version}}
         fi
-        cd chicken-${chicken_version}
+        cd chicken-${{inputs.chicken_version}}
         ./configure --prefix=/usr/local
         make
         sudo make install
