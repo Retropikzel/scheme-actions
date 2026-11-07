@@ -3,12 +3,11 @@ inputs:
   COMPILE_R7RS:
     description: The Scheme implementation to use
     required: true
-  capy_version:
-    default: "3.1.0"
-  chez_version:
-    default: "10.4.1"
-  cyclone_version:
-    default: "0.36.0"
+  chibi_version: head
+  capy_version: 3.1.0
+  chez_version: 10.4.1
+  cyclone_version: 0.36.0
+  foment_version: head
 runs:
   using: composite
   steps:
@@ -19,7 +18,7 @@ runs:
         path: /opt/chibi
         key: chibi
 
-    - name: Install chibi (git head)
+    - name: Install chibi (${{ inputs.chibi_version }})
       shell: sh
       run: |
         mkdir -p /opt/chibi
@@ -46,17 +45,17 @@ runs:
         path: /opt/capy
         key: capy
 
-    - name: Install capy (env.capy_version)
-      if: env.COMPILE_R7RS == 'capyscheme'
+    - name: Install capy (${{inputs.capy_version}})
+      if: inputs.COMPILE_R7RS == 'capyscheme'
       shell: sh
       run: |
           mkdir -p /opt/capy
           cd /opt/capy
           if [ ! -f capy ]; then
-            wget https://github.com/playX18/capyscheme/releases/download/v${capy_version}/capyscheme-${capy_version}-x86_64-unknown-linux-gnu.tar.gz
-            tar -xf capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
+            wget https://github.com/playX18/capyscheme/releases/download/v${{inputs.capy_version}}/capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
+            tar -xf capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
           fi
-          cp -r capy/${capy_version} /opt/capy
+          cp -r capy/${{inputs.capy_version}} /opt/capy
           sudo ln -sf /opt/capy/capy /usr/local/bin/capy
 
     - uses: actions/cache/save@v5
@@ -72,8 +71,8 @@ runs:
         path: /opt/chez
         key: chez
 
-    - name: Install chez (env.chez_version)
-      if: env.COMPILE_R7RS == 'chezscheme'
+    - name: Install chez (${{inputs.chez_version}})
+      if: inputs.COMPILE_R7RS == 'chezscheme'
       shell: sh
       run: |
           mkdir -p /opt/chez
@@ -100,8 +99,8 @@ runs:
         path: /opt/chicken
         key: chicken
 
-    - name: Install chicken (env.chicken_version)
-      if: env.COMPILE_R7RS == 'chicken'
+    - name: Install chicken (${{inputs.chicken_version}})
+      if: inputs.COMPILE_R7RS == 'chicken'
       shell: sh
       run: |
         mkdir -p /opt/chicken
@@ -128,8 +127,8 @@ runs:
         path: /opt/cyclone
         key: cyclone
 
-    - name: Install cyclone (env.cyclone_version)
-      if: env.COMPILE_R7RS == 'cyclone'
+    - name: Install cyclone (${{inputs.cyclone_version}})
+      if: inputs.COMPILE_R7RS == 'cyclone'
       shell: sh
       run: |
           sudo apt-get install -y libtommath-dev libck-dev
@@ -154,8 +153,8 @@ runs:
         path: /opt/foment
         key: foment
 
-    - name: Install foment (git head)
-      if: env.COMPILE_R7RS == 'foment'
+    - name: Install foment (${{inputs.foment_version}})
+      if: inputs.COMPILE_R7RS == 'foment'
       shell: sh
       run: |
         if [ ! -d foment ]; then
@@ -180,5 +179,5 @@ runs:
     - name: Set COMPILE_R7RS environment variable
       shell: sh
       run: |
-        echo "COMPILE_R7RS=${{env.COMPILE_R7RS}}" >> $GITHUB_ENV
+        echo "COMPILE_R7RS=${{inputs.COMPILE_R7RS}}" >> $GITHUB_ENV
 
