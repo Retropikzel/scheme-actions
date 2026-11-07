@@ -55,7 +55,7 @@ runs:
       id: restore
       with:
         path: /opt/${{inputs.COMPILE_R7RS}}
-        key: ${{inputs.COMPILE_R7RS}}
+        key: "${{inputs.COMPILE_R7RS}}"
 
     # Capy
     - name: Install capy (${{inputs.capy_version}})
