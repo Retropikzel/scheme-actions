@@ -304,7 +304,14 @@ runs:
       run: |
         mkdir -p /opt/guile
         cd /opt/guile
-        sudo apt install -y libunistring-dev
+        sudo apt install -y \
+          libunistring-dev \
+          libncurses5-dev \
+          libreadline-dev \
+          libltdl-dev \
+          libgmp-dev \
+          libgc-dev \
+          libffi-dev
         file_version=$(echo "${{inputs.guile_version}}" | tr '.' '_')
         if [ ! -d gambit-${{inputs.gambit_version}} ]; then
           wget https://ftp.gnu.org/gnu/guile/guile-3.0.11.tar.gz
