@@ -270,7 +270,7 @@ runs:
         mkdir -p /opt/gambit
         cd /opt/gambit
         file_version=$(echo "${{inputs.gambit_version}}" | tr '.' '_')
-        if [ ! -d gambit-${{inputs.gambit_version}} ]; then
+        if [ ! -d gambit-v${{inputs.gambit_version}} ]; then
           wget https://gambitscheme.org/${{inputs.gambit_version}}/gambit-v${file_version}.tgz
           tar -xf gambit-v${file_version}.tgz
           cd gambit-v${file_version}
@@ -319,7 +319,7 @@ runs:
             libgc-dev \
             libffi-dev
           file_version=$(echo "${{inputs.guile_version}}" | tr '.' '_')
-          if [ ! -d gambit-${{inputs.gambit_version}} ]; then
+          if [ ! -d guile-${{inputs.guile_version}} ]; then
             wget https://ftp.gnu.org/gnu/guile/guile-3.0.11.tar.gz
             tar -xf guile-${{inputs.guile_version}}.tar.gz
             cd guile-${{inputs.guile_version}}
