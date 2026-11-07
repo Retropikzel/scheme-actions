@@ -255,11 +255,11 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'gambit' }}
       shell: sh
       run: |
+        file_version=$(echo "${{inputs.gambit_version}}" | tr '.' '_')
         if [ ! -d gambit-${{inputs.gambit_version}} ]; then
-          file_version=$(echo "${{inputs.gambit_version}}" | tr '.' '_')
           wget https://gambitscheme.org/${{inputs.gambit_version}}/gambit-v${file_version}.tgz
-          tar -xf gambit-v${{inputs.gambit_version}}.tgz
-          cd gambit-${{inputs.gambit_version}}
+          tar -xf gambit-v${{file_version}}.tgz
+          cd gambit-v${{file_version}}
           ./configure \
             --prefix=/usr/local \
             --enable-single-host \
@@ -268,7 +268,7 @@ runs:
             --enable-trust-c-tco
           make -j 8
         else
-          cd gambit-${{inputs.gambit_version}}
+          cd gambit-${{file_version}}
         fi
         sudo make install
 
