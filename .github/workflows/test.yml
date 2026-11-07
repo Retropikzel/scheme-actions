@@ -14,12 +14,12 @@ jobs:
       - uses: actions/checkout@v6
       - name: Install test dependencies
         uses: ./.github/actions/compile-r7rs
-        env:
+        inputs:
           COMPILE_R7RS: "${{ matrix.scheme }}"
       - name: test
         run: |
           export COMPILE_R7RS_DEBUG=1
-          compile-r7rs -o hello-world hello-world.sps
+          COMPILE_R7RS=${{ matrix.scheme }} compile-r7rs -o hello-world hello-world.sps
           ./hello-world
   r7rs:
     runs-on: ubuntu-26.04
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v6
       - name: Install test dependencies
         uses: ./.github/actions/compile-r7rs
-        env:
+        inputs:
           COMPILE_R7RS: "${{ matrix.scheme }}"
       - name: test
         run: |

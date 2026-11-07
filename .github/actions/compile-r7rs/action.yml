@@ -27,10 +27,10 @@ runs:
   steps:
     # Chibi
     - uses: actions/cache/restore@v5
-      id: restore
+      id: chibi-restore
       with:
-        path: /opt
-        key: compile-r7rs-cache
+        path: /opt/chibi
+        key: chibi
 
     - name: Install chibi (${{ inputs.chibi_version }})
       shell: sh
@@ -45,21 +45,48 @@ runs:
         sudo make install
         mkdir -p ~/.snow && echo "()" > ~/.snow/config.scm
 
+    - uses: actions/cache/save@v5
+      id: chibi-save
+      with:
+        path: /opt/chibi
+        key: chibi
+
     # Capy
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'capyscheme' }}
+      id: capy-restore
+      with:
+        path: /opt/capy
+        key: capy
+
     - name: Install capy (${{inputs.capy_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'capyscheme' }}
       shell: sh
       run: |
-          if [ "${{ inputs.COMPILE_R7RS}}"  = "capyscheme" ]; then
-            mkdir -p /opt/capy
-            cd /opt/capy
-            if [ ! -f capy ]; then
-              wget https://github.com/playX18/capyscheme/releases/download/v${{inputs.capy_version}}/capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
-              tar -xf capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
-            fi
-            cp -r capy/${{inputs.capy_version}} /opt/capy
-            sudo ln -sf /opt/capy/capy /usr/local/bin/capy
+          mkdir -p /opt/capy
+          cd /opt/capy
+          if [ ! -f capy ]; then
+            wget https://github.com/playX18/capyscheme/releases/download/v${{inputs.capy_version}}/capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
+            tar -xf capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
           fi
+          cp -r capy/${{inputs.capy_version}} /opt/capy
+          sudo ln -sf /opt/capy/capy /usr/local/bin/capy
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'capyscheme' }}
+      id: capy-save
+      with:
+        path: /opt/capy
+        key: capy
+
     # Chez
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'chezscheme' }}
+      id: chez-restore
+      with:
+        path: /opt/chez
+        key: chez
+
     - name: Install chez (${{inputs.chez_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'chezscheme' }}
       shell: sh
@@ -74,7 +101,22 @@ runs:
           ./configure --prefix=/usr/local
           make
           sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'chezscheme' }}
+      id: chez-save
+      with:
+        path: /opt/chez
+        key: chez
+
     # Chicken
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'chicken' }}
+      id: chicken-restore
+      with:
+        path: /opt/chicken
+        key: chicken
+
     - name: Install chicken (${{inputs.chicken_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'chicken' }}
       shell: sh
@@ -89,7 +131,22 @@ runs:
         ./configure --prefix=/usr/local
         make
         sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'chicken' }}
+      id: chicken-save
+      with:
+        path: /opt/chicken
+        key: chicken
+
     # Cyclone
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'cyclone' }}
+      id: cyclone-restore
+      with:
+        path: /opt/cyclone
+        key: cyclone
+
     - name: Install cyclone (${{inputs.cyclone_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'cyclone' }}
       shell: sh
@@ -102,7 +159,22 @@ runs:
           cd cyclone-bootstrap-${{inputs.cyclone_version}}
           make
           sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'chicken' }}
+      id: cyclone-save
+      with:
+        path: /opt/cyclone
+        key: cyclone
+
     # Foment
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'foment' }}
+      id: foment-restore
+      with:
+        path: /opt/foment
+        key: foment
+
     - name: Install foment (${{inputs.foment_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'foment' }}
       shell: sh
@@ -115,10 +187,11 @@ runs:
         sudo make install
 
     - uses: actions/cache/save@v5
-      id: save
+      if: ${{ inputs.COMPILE_R7RS  == 'foment' }}
+      id: foment-save
       with:
-        path: /opt
-        key: compile-r7rs-cache
+        path: /opt/foment
+        key: foment
 
     # Misc
     - name: Install compile-r7rs
