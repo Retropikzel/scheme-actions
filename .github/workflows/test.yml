@@ -26,7 +26,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        scheme: [capyscheme, chibi, chicken, cyclone, foment, gauche, gambit, guile, kawa, loko]
+        scheme: [capyscheme, chibi, chicken, cyclone, foment, gauche, gambit, guile, kawa, loko, meevax]
     steps:
       - uses: actions/checkout@v6
       - name: Init the test environment
