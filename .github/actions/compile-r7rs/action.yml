@@ -25,6 +25,9 @@ inputs:
   gauche_version:
     default: 0.9.15
     type: string
+  gambit_version:
+    default: 4.9.8
+    type: string
 runs:
   using: composite
   steps:
@@ -222,7 +225,8 @@ runs:
       shell: sh
       run: |
         if [ ! -d Gauche-${{inputs.gauche_version}} ]; then
-          wget https://github.com/shirok/Gauche/releases/download/release0_9_15/Gauche-${{inputs.gauche_version}}.tgz
+          file_version=$(echo "${{inputs.gauche_version}}" | tr '.' '_')
+          wget https://github.com/shirok/Gauche/releases/download/release${file_version}/Gauche-${{inputs.gauche_version}}.tgz
           tar -xf Gauche-${{inputs.gauche_version}}.tgz
           cd Gauche-${{inputs.gauche_version}}
           ./configure
@@ -238,6 +242,42 @@ runs:
       with:
         path: /opt/gauche
         key: gauche
+
+    # Gambit
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'gambit' }}
+      id: gambit-restore
+      with:
+        path: /opt/gambit
+        key: gambit
+
+    - name: Install gambit (${{inputs.gambit_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'gambit' }}
+      shell: sh
+      run: |
+        if [ ! -d gambit-${{inputs.gambit_version}} ]; then
+          file_version=$(echo "${{inputs.gambit_version}}" | tr '.' '_')
+          wget https://gambitscheme.org/${{inputs.gambit_version}}/gambit-v${file_version}.tgz
+          tar -xf gambit-${{inputs.gambit_version}}.tgz
+          cd gambit-${{inputs.gambit_version}}
+          ./configure \
+            --prefix=/usr/local \
+            --enable-single-host \
+            --enable-march=native \
+            --enable-dynamic-clib \
+            --enable-trust-c-tco
+          make -j 8
+        else
+          cd gambit-${{inputs.gambit_version}}
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'gambit' }}
+      id: gambit-save
+      with:
+        path: /opt/gambit
+        key: gambit
 
     # Misc
     - name: Install compile-r7rs
