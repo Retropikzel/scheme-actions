@@ -52,7 +52,7 @@ runs:
         key: chibi
 
     - uses: actions/cache/restore@v5
-      id: "${{inputs.COMPILE_R7RS}}-restore"
+      id: restore
       with:
         path: /opt/${{inputs.COMPILE_R7RS}}
         key: ${{inputs.COMPILE_R7RS}}
@@ -126,7 +126,7 @@ runs:
         sudo make install
 
     - uses: actions/cache/save@v5
-      id: ${{inputs.COMPILE_R7RS}}-save
+      id: save
       with:
         path: /opt/${{inputs.COMPILE_R7RS}}
         key: ${{inputs.COMPILE_R7RS}}
