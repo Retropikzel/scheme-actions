@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-26.04
     strategy:
       matrix:
-        scheme: [capyscheme, chibi]
+        scheme: [capyscheme, chibi, chicken, cyclone, foment]
     steps:
       - uses: actions/checkout@v6
       - name: Install test dependencies
