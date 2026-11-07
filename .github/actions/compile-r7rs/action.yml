@@ -29,7 +29,7 @@ inputs:
     default: 4.9.8
     type: string
   guile_version:
-    default: 3.0.11
+    default: 3.0.10
     type: string
 runs:
   using: composite
@@ -298,31 +298,35 @@ runs:
         path: /opt/guile
         key: guile
 
-    - name: Install guile (${{inputs.guile_version}})
+    - name: Install guile (3.0.10)
       if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
       shell: sh
       run: |
-        mkdir -p /opt/guile
-        cd /opt/guile
-        sudo apt install -y \
-          libunistring-dev \
-          libncurses5-dev \
-          libreadline-dev \
-          libltdl-dev \
-          libgmp-dev \
-          libgc-dev \
-          libffi-dev
-        file_version=$(echo "${{inputs.guile_version}}" | tr '.' '_')
-        if [ ! -d gambit-${{inputs.gambit_version}} ]; then
-          wget https://ftp.gnu.org/gnu/guile/guile-3.0.11.tar.gz
-          tar -xf guile-${{inputs.guile_version}}.tar.gz
-          cd guile-${{inputs.guile_version}}
-          ./configure
-          make -j 8
+        if [ "${{inputs.guile_version}}" = "3.0.10" ]; then
+          sudo apt install -y guile-3.0
         else
-          cd guile-${{inputs.guile_version}}
+          mkdir -p /opt/guile
+          cd /opt/guile
+          sudo apt install -y \
+            libunistring-dev \
+            libncurses5-dev \
+            libreadline-dev \
+            libltdl-dev \
+            libgmp-dev \
+            libgc-dev \
+            libffi-dev
+          file_version=$(echo "${{inputs.guile_version}}" | tr '.' '_')
+          if [ ! -d gambit-${{inputs.gambit_version}} ]; then
+            wget https://ftp.gnu.org/gnu/guile/guile-3.0.11.tar.gz
+            tar -xf guile-${{inputs.guile_version}}.tar.gz
+            cd guile-${{inputs.guile_version}}
+            ./configure
+            make -j 8
+          else
+            cd guile-${{inputs.guile_version}}
+          fi
+          sudo make install
         fi
-        sudo make install
 
     - uses: actions/cache/save@v5
       if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
