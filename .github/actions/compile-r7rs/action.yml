@@ -118,7 +118,7 @@ runs:
         cd /opt/chicken
         if [ ! -d chicken-${{inputs.chicken_version}} ]; then
           wget https://code.call-cc.org/releases/${{inputs.chicken_version}}/chicken-${{inputs.chicken_version}}.tar.gz
-          tar -xf chicken-${{inputs.chicken_version}}
+          tar -xf chicken-${{inputs.chicken_version}}.tar.gz
         fi
         cd chicken-${{inputs.chicken_version}}
         ./configure --prefix=/usr/local
