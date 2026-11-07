@@ -9,7 +9,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        scheme: [capyscheme, chezscheme, guile]
+        scheme: [capyscheme, chezscheme, guile, ironscheme]
     steps:
       - uses: actions/checkout@v6
       - name: Init the test environment

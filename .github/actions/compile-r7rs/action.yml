@@ -31,6 +31,9 @@ inputs:
   guile_version:
     default: 3.0.10
     type: string
+  ironscheme_version:
+    default: 3.0.10
+    type: string
 runs:
   using: composite
   steps:
@@ -327,6 +330,37 @@ runs:
           fi
           sudo make install
         fi
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
+      id: guile-save
+      with:
+        path: /opt/guile
+        key: guile
+
+    # Ironscheme
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'ironscheme' }}
+      id: ironscheme-restore
+      with:
+        path: /opt/ironscheme
+        key: ironscheme
+
+    - name: Install ironscheme (${{inputs.ironscheme_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'ironscheme' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/ironscheme
+        cd /opt/ironscheme
+        if [ ! -d IronScheme ]; then
+          git clone git clone https://github.com/IronScheme/IronScheme.git -b 1.1.650 --recurse-submodules
+          cd IronScheme/IronScheme
+          sh build.sh
+          sh package.sh
+        else
+          cd IronScheme/IronScheme
+        fi
+        sh nuget.sh
 
     - uses: actions/cache/save@v5
       if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
