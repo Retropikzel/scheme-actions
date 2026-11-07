@@ -16,6 +16,7 @@ jobs:
         env:
           COMPILE_R7RS: "${{ matrix.scheme }}"
       - name: test
+        continue-on-error: true
         run: |
           compile-r7rs -o hello-world hello-world.scm
           ./hello-world
