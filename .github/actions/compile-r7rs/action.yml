@@ -46,6 +46,9 @@ inputs:
   mit_version:
     default: 12.1
     type: string
+  mosh_version:
+    default: 0.2.9-rc1
+    type: string
 runs:
   using: composite
   steps:
@@ -500,6 +503,39 @@ runs:
       with:
         path: /opt/mit-scheme
         key: mit-scheme
+
+    # Mosh
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'mosh' }}
+      id: mosh-restore
+      with:
+        path: /opt/mosh
+        key: mosh
+
+    - name: Install mosh (${{inputs.mosh_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'mosh' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/mosh
+        cd /opt/mosh
+        sudo apt-get install -y libonig-dev
+        if [ ! -d mosh ]; then
+          wget https://github.com/higepon/mosh/releases/download/mosh-${{inputs.mosh_version}}/mosh-${{inputs.mosh_version}}.tar.gz
+          tar -xf mosh-${{inputs.mosh_version}}.tar.gz
+          cd mosh-${{inputs.mosh_version}}
+          ./configure --prefix=/usr/local
+          make -j 4
+        else
+          cd mosh
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'mosh' }}
+      id: mosh-save
+      with:
+        path: /opt/mosh
+        key: mosh
 
     # Misc
     - name: Install compile-r7rs
