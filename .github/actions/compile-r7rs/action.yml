@@ -69,8 +69,7 @@ runs:
             wget https://github.com/playX18/capyscheme/releases/download/v${{inputs.capy_version}}/capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
             tar -xf capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
           fi
-          cp -r capy/${{inputs.capy_version}} /opt/capy
-          sudo ln -sf /opt/capy/capy /usr/local/bin/capy
+          sudo ln -sf /opt/capy/${{inputs.capy_version}} capy /usr/bin/capy
 
     - uses: actions/cache/save@v5
       if: ${{ inputs.COMPILE_R7RS  == 'capyscheme' }}
