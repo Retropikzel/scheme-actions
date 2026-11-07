@@ -18,6 +18,7 @@ jobs:
       - name: test
         continue-on-error: true
         run: |
+          export COMPILE_R7RS_DEBUG=1
           compile-r7rs -o hello-world hello-world.sps
           ./hello-world
   r7rs:
@@ -34,5 +35,6 @@ jobs:
       - name: test
         continue-on-error: true
         run: |
+          export COMPILE_R7RS_DEBUG=1
           compile-r7rs -o hello-world hello-world.scm
           ./hello-world
