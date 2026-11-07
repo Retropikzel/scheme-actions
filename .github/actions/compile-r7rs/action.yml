@@ -22,6 +22,9 @@ inputs:
   foment_version:
     default: head
     type: string
+  gauche_version:
+    default: 0.9.15
+    type: string
 runs:
   using: composite
   steps:
@@ -201,6 +204,36 @@ runs:
       with:
         path: /opt/foment
         key: foment
+
+    # Gauche
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'gauche' }}
+      id: foment-restore
+      with:
+        path: /opt/gauche
+        key: gauche
+
+    - name: Install gauche (${{inputs.gauche_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'gauche' }}
+      shell: sh
+      run: |
+        if [ ! -d Gauche-${{inputs.gauche_version}} ]; then
+          wget https://github.com/shirok/Gauche/releases/download/release0_9_15/Gauche-${{inputs.gauche_version}}.tgz
+          tar -xf Gauche-${{inputs.gauche_version}}.tgz
+          cd Gauche-${{inputs.gauche_version}}
+          ./configure
+          make -j 8
+        else
+          cd Gauche-${{inputs.gauche_version}}
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'gauche' }}
+      id: gauche-save
+      with:
+        path: /opt/gauche
+        key: gauche
 
     # Misc
     - name: Install compile-r7rs
