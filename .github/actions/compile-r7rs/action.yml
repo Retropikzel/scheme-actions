@@ -32,28 +32,32 @@ runs:
     - uses: actions/cache/restore@v5
       id: chibi-restore
       with:
-        path: /opt/chibi
+        path: |
+          /usr/local/bin/chibi
+          /usr/local/lib/chibi
+          /usr/local/lib/libchibi.so.0
+          /usr/local/share/chibi
         key: chibi
 
     - name: Install chibi (${{ inputs.chibi_version }})
       shell: sh
       run: |
-        mkdir -p /opt/chibi
-        cd /opt/chibi
-        if [ ! -d chibi-scheme ]; then
+        if [ ! -f /usr/local/bin/chibi-scheme ]; then
           git clone https://github.com/ashinn/chibi-scheme.git --depth=1
           cd chibi-scheme
           make -j 8 # assumes GNUMake
-        else
-          cd chibi-scheme
+          sudo make -j 8 install
         fi
-        sudo make -j 8 install
         mkdir -p ~/.snow && echo "()" > ~/.snow/config.scm
 
     - uses: actions/cache/save@v5
       id: chibi-save
       with:
-        path: /opt/chibi
+        path: |
+          /usr/local/bin/chibi
+          /usr/local/lib/chibi
+          /usr/local/lib/libchibi.so.0
+          /usr/local/share/chibi
         key: chibi
 
     # Capy
