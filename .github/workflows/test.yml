@@ -28,13 +28,13 @@ jobs:
         scheme: [capyscheme, chibi, chicken, cyclone, foment]
     steps:
       - uses: actions/checkout@v6
-      - name: Install test dependencies
+      - name: Test
         uses: ./.github/actions/compile-r7rs
         env:
           COMPILE_R7RS: "${{ matrix.scheme }}"
-      - name: test
         continue-on-error: true
         run: |
           export COMPILE_R7RS_DEBUG=1
+          echo "COMPILE_R7RS: ${COMPILE_R7RS}"
           compile-r7rs -o hello-world hello-world.scm
           ./hello-world
