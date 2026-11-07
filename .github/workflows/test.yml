@@ -36,6 +36,6 @@ jobs:
       - name: test
         run: |
           export COMPILE_R7RS_DEBUG=1
-          echo "COMPILE_R7RS: ${COMPILE_R7RS}"
+          export COMPILE_R7RS=${{ matrix.scheme }}
           compile-r7rs -o hello-world hello-world.scm
           ./hello-world
