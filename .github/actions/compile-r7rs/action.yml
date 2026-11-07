@@ -1,14 +1,14 @@
 name: compile-r7rs
-env:
-  chibi_version: head
-  capy_version: 3.1.0
-  chez_version: 10.4.1
-  cyclone_version: 0.36.0
-  foment_version: head
-intpus:
+inputs:
   COMPILE_R7RS:
     description: The Scheme implementation to use
     required: true
+  capy_version:
+    default: 3.1.0
+  chez_version:
+    default: 10.4.1
+  cyclone_version:
+    default: 0.36.0
 runs:
   using: composite
   steps:
@@ -19,7 +19,7 @@ runs:
         path: /opt/chibi
         key: chibi
 
-    - name: Install chibi (${{env.chibi_version}})
+    - name: Install chibi (git head)
       shell: sh
       run: |
         mkdir -p /opt/chibi
@@ -154,7 +154,7 @@ runs:
         path: /opt/foment
         key: foment
 
-    - name: Install foment (${{env.foment_version}})
+    - name: Install foment (git head)
       if: env.COMPILE_R7RS == 'foment'
       shell: sh
       run: |
