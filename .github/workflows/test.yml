@@ -1,0 +1,18 @@
+name: test
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  chibi:
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v6
+      - id: Install test dependencies
+        uses: ./.github/actions/chibi-ubuntu
+      - name: test
+        run: |
+          compile-r7rs -o hello-world hello-world.scm
+          ./hello-world

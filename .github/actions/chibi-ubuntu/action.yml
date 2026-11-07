@@ -1,0 +1,22 @@
+name: chibi-ubuntu
+runs:
+  using: composite
+  steps:
+    - name: Install chibi-shcmee
+      shell: bash
+      run: |
+        git clone https://github.com/ashinn/chibi-scheme.git --depth=1
+        cd chibi-scheme
+        make # assumes GNUMake
+        sudo make install
+        mkdir -p ~/.snow && echo "()" > ~/.snow/config.scm
+
+    - name: Install compile-r7rs
+      shell: bash
+      run: |
+        snow-chibi install --always-yes "(retropikzel compile-r7rs)"
+
+    - name: Set COMPILE_R7RS environment variable
+      shell: bash
+      run: |
+        echo "COMPILE_R7RS=chibi" >> $GITHUB_ENV
