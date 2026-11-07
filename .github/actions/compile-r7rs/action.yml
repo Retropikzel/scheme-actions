@@ -169,6 +169,8 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'cyclone' }}
       shell: sh
       run: |
+          mkdir -p /opt/cyclone
+          cd /opt/cyclone
           sudo apt-get install -y libtommath-dev libck-dev
           if [ ! -d cyclone-bootstrap ]; then
             wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v${{inputs.cyclone_version}}.tar.gz
@@ -199,6 +201,8 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'foment' }}
       shell: sh
       run: |
+        mkdir -p /opt/foment
+        cd /opt/foment
         if [ ! -d foment ]; then
           git clone https://github.com/leftmike/foment.git --depth=1
           cd foment/unix
@@ -227,6 +231,8 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'gauche' }}
       shell: sh
       run: |
+        mkdir -p /opt/gauche
+        cd /opt/gauche
         if [ ! -d Gauche-${{inputs.gauche_version}} ]; then
           file_version=$(echo "${{inputs.gauche_version}}" | tr '.' '_')
           wget https://github.com/shirok/Gauche/releases/download/release${file_version}/Gauche-${{inputs.gauche_version}}.tgz
@@ -258,6 +264,8 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'gambit' }}
       shell: sh
       run: |
+        mkdir -p /opt/gambit
+        cd /opt/gambit
         file_version=$(echo "${{inputs.gambit_version}}" | tr '.' '_')
         if [ ! -d gambit-${{inputs.gambit_version}} ]; then
           wget https://gambitscheme.org/${{inputs.gambit_version}}/gambit-v${file_version}.tgz
@@ -294,6 +302,8 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
       shell: sh
       run: |
+        mkdir -p /opt/guile
+        cd /opt/guile
         sudo apt install -y libunistring-dev
         file_version=$(echo "${{inputs.guile_version}}" | tr '.' '_')
         if [ ! -d gambit-${{inputs.gambit_version}} ]; then
