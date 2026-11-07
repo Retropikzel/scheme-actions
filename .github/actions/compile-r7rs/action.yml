@@ -279,6 +279,37 @@ runs:
         path: /opt/gambit
         key: gambit
 
+    # Guile
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
+      id: guile-restore
+      with:
+        path: /opt/guile
+        key: guile
+
+    - name: Install guile (${{inputs.guile_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
+      shell: sh
+      run: |
+        file_version=$(echo "${{inputs.guile_version}}" | tr '.' '_')
+        if [ ! -d gambit-${{inputs.gambit_version}} ]; then
+          wget https://ftp.gnu.org/gnu/guile/guile-3.0.11.tar.gz
+          tar -xf guile-v${{inputs.guile_version}}.tgz
+          cd guile-${{inputs.guile_version}}
+          ./configure
+          make -j 8
+        else
+          cd guile-${{inputs.guile_version}}
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
+      id: guile-save
+      with:
+        path: /opt/guile
+        key: guile
+
     # Misc
     - name: Install compile-r7rs
       shell: sh

@@ -9,7 +9,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        scheme: [capyscheme, chezscheme]
+        scheme: [capyscheme, chezscheme, guile]
     steps:
       - uses: actions/checkout@v6
       - name: Init the test environment
@@ -26,7 +26,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        scheme: [capyscheme, chibi, chicken, cyclone, foment, gauche, gambit]
+        scheme: [capyscheme, chibi, chicken, cyclone, foment, gauche, gambit, guile]
     steps:
       - uses: actions/checkout@v6
       - name: Init the test environment
