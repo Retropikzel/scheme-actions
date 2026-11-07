@@ -6,14 +6,31 @@ intpus:
 runs:
   using: composite
   steps:
+    - uses: actions/cache/restore@v5
+      id: chibi-restore
+      with:
+        path: /opt/chibi
+        key: chibi
+
     - name: Install chibi
       shell: sh
       run: |
-        git clone https://github.com/ashinn/chibi-scheme.git --depth=1
+        mkdir -p /opt/chibi
+        cd /opt/chibi
+        if [ ! -d chibi-scheme ]; then
+          git clone https://github.com/ashinn/chibi-scheme.git --depth=1
+        fi
         cd chibi-scheme
+        git pull --force
         make # assumes GNUMake
         sudo make install
         mkdir -p ~/.snow && echo "()" > ~/.snow/config.scm
+
+    - uses: actions/cache/save@v5
+      id: chibi-save
+      with:
+        path: /opt/chibi
+        key: chibi
 
     - name: Install compile-r7rs
       shell: sh
