@@ -16,7 +16,6 @@ jobs:
         env:
           COMPILE_R7RS: "${{ matrix.scheme }}"
       - name: test
-        continue-on-error: true
         run: |
           export COMPILE_R7RS_DEBUG=1
           compile-r7rs -o hello-world hello-world.sps
@@ -28,11 +27,11 @@ jobs:
         scheme: [capyscheme, chibi, chicken, cyclone, foment]
     steps:
       - uses: actions/checkout@v6
-      - name: Test
+      - name: Install test dependencies
         uses: ./.github/actions/compile-r7rs
         env:
           COMPILE_R7RS: "${{ matrix.scheme }}"
-        continue-on-error: true
+      - name: test
         run: |
           export COMPILE_R7RS_DEBUG=1
           echo "COMPILE_R7RS: ${COMPILE_R7RS}"
