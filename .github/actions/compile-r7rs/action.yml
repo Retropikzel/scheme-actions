@@ -362,12 +362,37 @@ runs:
         fi
         sh nuget.sh
 
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'ironscheme' }}
-      id: ironscheme-save
+    # Kawa
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'kawa' }}
+      id: kawa-restore
       with:
-        path: /opt/ironscheme
-        key: ironscheme
+        path: /opt/kawa
+        key: kawa
+
+    - name: Install kawa (${{inputs.kawa_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'kawa' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/kawa
+        cd /opt/kawa
+        if [ ! -d kawa ]; then
+          git clone https://gitlab.com/kashell/Kawa.git --depth=1
+          cd Kawa
+          bash autogen.sh
+          ./configure --prefix=/usr/local
+          make
+        else
+          cd Kawa
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'kawa' }}
+      id: kawa-save
+      with:
+        path: /opt/kawa
+        key: kawa
 
     # Misc
     - name: Install compile-r7rs
