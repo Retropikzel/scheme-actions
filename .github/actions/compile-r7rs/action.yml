@@ -457,8 +457,7 @@ runs:
         if [ ! -d meevax ]; then
           git clone https://github.com/yamacir-kit/meevax.git --branch=release-candidate #--branch=v${{inputs.meevax_version}}
           cd meevax
-          CC=gcc cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
-          cd build
+          CC=gcc cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .
           make -j 4
         else
           cd meevax
