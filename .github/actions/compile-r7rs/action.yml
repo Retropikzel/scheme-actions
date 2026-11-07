@@ -183,7 +183,7 @@ runs:
           sudo make CC=gcc-14 install
 
     - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'chicken' }}
+      if: ${{ inputs.COMPILE_R7RS  == 'cyclone' }}
       id: cyclone-save
       with:
         path: /opt/cyclone
