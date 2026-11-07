@@ -28,6 +28,9 @@ inputs:
   gambit_version:
     default: 4.9.8
     type: string
+  gambit_version:
+    default: 3.0.11
+    type: string
 runs:
   using: composite
   steps:
