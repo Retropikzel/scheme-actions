@@ -5,7 +5,8 @@ using compile-r7rs.
 
 ## Usage
 
-Fro usage see .github/workflows/test.yml. First runs may take longer as
+Fro usage see .github/workflows/test.yml. First runs may take longer as the
+implementations are built, but they are cached from there on.
 
 
 
