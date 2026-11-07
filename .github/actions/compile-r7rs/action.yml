@@ -40,6 +40,9 @@ inputs:
   loko_version:
     default: 0.13.0
     type: string
+  meevax_version:
+    default: 0.5.596
+    type: string
 runs:
   using: composite
   steps:
@@ -430,6 +433,38 @@ runs:
       with:
         path: /opt/loko
         key: loko
+
+    # Meevax
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'meevax' }}
+      id: meevax-restore
+      with:
+        path: /opt/meevax
+        key: meevax
+
+    - name: Install meevax (${{inputs.meevax_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'meevax' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/meevax
+        cd /opt/meevax
+        if [ ! -d meevax ]; then
+          git clone https://github.com/yamacir-kit/meevax.git --branch=release-candidate --branch=v${{inputs.meevax_version}}
+          cd meevax
+          CC=gcc cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+          cd build
+          make
+        else
+          cd meevax
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'meevax' }}
+      id: meevax-save
+      with:
+        path: /opt/meevax
+        key: meevax
 
     # Misc
     - name: Install compile-r7rs
