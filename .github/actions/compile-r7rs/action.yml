@@ -38,7 +38,7 @@ runs:
           VERSION=3.1.0
           mkdir -p /opt/capy
           cd /opt/capy
-          if [ -f capy ]; then
+          if [ ! -f capy ]; then
             wget https://github.com/playX18/capyscheme/releases/download/v${VERSION}/capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
             tar -xf capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
           fi
