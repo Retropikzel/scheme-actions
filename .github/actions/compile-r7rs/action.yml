@@ -53,10 +53,10 @@ runs:
           mkdir -p /opt/capy
           cd /opt/capy
           if [ ! -f capy ]; then
-            wget https://github.com/playX18/capyscheme/releases/download/v${{env.capy_version}}/capyscheme-${{env.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
+            wget https://github.com/playX18/capyscheme/releases/download/v${capy_version}/capyscheme-${capy_version}-x86_64-unknown-linux-gnu.tar.gz
             tar -xf capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
           fi
-          cp -r capy/${{env.capy_version}} /opt/capy
+          cp -r capy/${capy_version} /opt/capy
           sudo ln -sf /opt/capy/capy /usr/local/bin/capy
 
     - uses: actions/cache/save@v5
@@ -78,11 +78,11 @@ runs:
       run: |
           mkdir -p /opt/chez
           cd /opt/chez
-          if [ ! -d csv${{env.chez_version}} ];then
-            wget https://github.com/cisco/ChezScheme/releases/download/v${{env.chez_version}}/csv${{env.chez_version}}.tar.gz
-            tar -xf csv${{env.chez_version}}.tar.gz
+          if [ ! -d csv${chez_version} ];then
+            wget https://github.com/cisco/ChezScheme/releases/download/v${chez_version}/csv${chez_version}.tar.gz
+            tar -xf csv${chez_version}.tar.gz
           fi
-          cd csv${{env.chez_version}}
+          cd csv${chez_version}
           ./configure --prefix=/usr/local
           make
           sudo make install
@@ -107,10 +107,10 @@ runs:
         mkdir -p /opt/chicken
         cd /opt/chicken
         if [ ! -d chicken ]; then
-          wget https://code.call-cc.org/releases/${{env.chicken_version}}/chicken-${{env.chicken_version}}.tar.gz
-          tar -xf chiken-${{env.chicken_version}}
+          wget https://code.call-cc.org/releases/${chicken_version}/chicken-${chicken_version}.tar.gz
+          tar -xf chiken-${chicken_version}
         fi
-        cd chicken-${{env.chicken_version}}
+        cd chicken-${chicken_version}
         ./configure --prefix=/usr/local
         make
         sudo make install
@@ -134,10 +134,10 @@ runs:
       run: |
           sudo apt-get install -y libtommath-dev libck-dev
           if [ ! -d cyclone-bootstrap ]; then
-            wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v${{env.cyclone_version}}.tar.gz
-            tar -xf v${{env.cyclone_version}}.tar.gz
+            wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v${cyclone_version}.tar.gz
+            tar -xf v${cyclone_version}.tar.gz
           fi
-          cd cyclone-bootstrap-${{env.cyclone_version}}
+          cd cyclone-bootstrap-${cyclone_version}
           make
           sudo make install
 
