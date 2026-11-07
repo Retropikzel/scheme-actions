@@ -32,7 +32,6 @@ runs:
           git clone https://github.com/ashinn/chibi-scheme.git --depth=1
         fi
         cd chibi-scheme
-        git pull --force
         make # assumes GNUMake
         sudo make install
         mkdir -p ~/.snow && echo "()" > ~/.snow/config.scm
