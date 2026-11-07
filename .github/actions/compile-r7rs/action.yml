@@ -54,9 +54,7 @@ runs:
       id: cache-capy
       uses: actions/cache@v6
       with:
-        path:
-          - /opt/capy
-          - /usr/local/bin/capy
+        path: /opt/capy
         key: capy
 
     - name: Install chez
