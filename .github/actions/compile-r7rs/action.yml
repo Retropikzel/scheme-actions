@@ -363,11 +363,11 @@ runs:
         sh nuget.sh
 
     - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
-      id: guile-save
+      if: ${{ inputs.COMPILE_R7RS  == 'ironscheme' }}
+      id: ironscheme-save
       with:
-        path: /opt/guile
-        key: guile
+        path: /opt/ironscheme
+        key: ironscheme
 
     # Misc
     - name: Install compile-r7rs
