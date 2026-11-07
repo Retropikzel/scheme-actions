@@ -208,7 +208,7 @@ runs:
     # Gauche
     - uses: actions/cache/restore@v5
       if: ${{ inputs.COMPILE_R7RS  == 'gauche' }}
-      id: foment-restore
+      id: gauche-restore
       with:
         path: /opt/gauche
         key: gauche
