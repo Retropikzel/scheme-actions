@@ -33,4 +33,4 @@ runs:
           wget https://github.com/playX18/capyscheme/releases/download/v${VERSION}/capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
           tar -xf capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
           cp -r capy/${VERSION} /opt/capy
-          ln -sf /opt/capy/capy /usr/local/bin/capy
+          sudo ln -sf /opt/capy/capy /usr/local/bin/capy
