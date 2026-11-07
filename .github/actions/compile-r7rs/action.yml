@@ -147,7 +147,7 @@ runs:
           sudo apt-get install -y libtommath-dev libck-dev
           if [ ! -d cyclone-bootstrap ]; then
             wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v${{inputs.cyclone_version}}.tar.gz
-            tar -xf v${{cyclone_version}}.tar.gz
+            tar -xf v${{inputs.cyclone_version}}.tar.gz
           fi
           cd cyclone-bootstrap-${{inputs.cyclone_version}}
           make
