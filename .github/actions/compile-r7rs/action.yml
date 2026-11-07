@@ -41,7 +41,7 @@ inputs:
     default: 0.13.0
     type: string
   meevax_version:
-    default: 0.5.596
+    default: head
     type: string
 runs:
   using: composite
@@ -385,7 +385,7 @@ runs:
       run: |
         mkdir -p /opt/kawa
         cd /opt/kawa
-        if [ ! -d kawa ]; then
+        if [ ! -d Kawa ]; then
           git clone https://gitlab.com/kashell/Kawa.git --depth=1
           cd Kawa
           bash autogen.sh
@@ -449,7 +449,7 @@ runs:
         mkdir -p /opt/meevax
         cd /opt/meevax
         if [ ! -d meevax ]; then
-          git clone https://github.com/yamacir-kit/meevax.git --branch=release-candidate --branch=v${{inputs.meevax_version}}
+          git clone https://github.com/yamacir-kit/meevax.git --branch=release-candidate #--branch=v${{inputs.meevax_version}}
           cd meevax
           CC=gcc cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
           cd build
