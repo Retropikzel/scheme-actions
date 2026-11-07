@@ -43,6 +43,9 @@ inputs:
   meevax_version:
     default: head
     type: string
+  mit_version:
+    default: 12.1
+    type: string
 runs:
   using: composite
   steps:
@@ -63,8 +66,8 @@ runs:
         if [ ! -f /usr/local/bin/chibi-scheme ]; then
           git clone https://github.com/ashinn/chibi-scheme.git --depth=1
           cd chibi-scheme
-          make -j 8 # assumes GNUMake
-          sudo make -j 8 install
+          make -j 4 # assumes GNUMake
+          sudo make -j 4 install
         fi
         mkdir -p ~/.snow && echo "()" > ~/.snow/config.scm
 
@@ -254,7 +257,7 @@ runs:
         else
           cd Gauche-${{inputs.gauche_version}}
         fi
-        make -j 8
+        make -j 4
         sudo make install
 
     - uses: actions/cache/save@v5
@@ -289,7 +292,7 @@ runs:
             --enable-march=native \
             --enable-dynamic-clib \
             --enable-trust-c-tco
-          make -j 8
+          make -j 4
         else
           cd gambit-v${file_version}
         fi
@@ -333,7 +336,7 @@ runs:
             tar -xf guile-${{inputs.guile_version}}.tar.gz
             cd guile-${{inputs.guile_version}}
             ./configure
-            make -j 8
+            make -j 4
           else
             cd guile-${{inputs.guile_version}}
           fi
@@ -453,7 +456,7 @@ runs:
           cd meevax
           CC=gcc cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
           cd build
-          make
+          make -j 4
         else
           cd meevax
         fi
@@ -465,6 +468,38 @@ runs:
       with:
         path: /opt/meevax
         key: meevax
+
+    # MIT-Scheme
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'mit-scheme' }}
+      id: mit-scheme-restore
+      with:
+        path: /opt/mit-scheme
+        key: mit-scheme
+
+    - name: Install mit-scheme (${{inputs.mit_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'mit-scheme' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/mit-scheme
+        cd /opt/mit-scheme
+        if [ ! -d mit-scheme ]; then
+          sudo apt install -y mit-scheme
+          wget https://ftp.gnu.org/gnu/mit-scheme/stable.pkg/${{inputs.mit_version}}/mit-scheme-${{inputs.mit_version}}.tar.gz
+          cd mit-scheme-${{inputs.mit_version}}
+          ./configure
+          make -j 4
+        else
+          cd mit-scheme-${{inputs.mit_version}}
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'mit-scheme' }}
+      id: mit-scheme-save
+      with:
+        path: /opt/mit-scheme
+        key: mit-scheme
 
     # Misc
     - name: Install compile-r7rs
