@@ -39,9 +39,11 @@ runs:
         cd /opt/chibi
         if [ ! -d chibi-scheme ]; then
           git clone https://github.com/ashinn/chibi-scheme.git --depth=1
+          cd chibi-scheme
+          make -j 8 # assumes GNUMake
+        else
+          cd chibi-scheme
         fi
-        cd chibi-scheme
-        make -j 8 # assumes GNUMake
         sudo make install
         mkdir -p ~/.snow && echo "()" > ~/.snow/config.scm
 
@@ -95,10 +97,12 @@ runs:
           if [ ! -d csv${{inputs.chez_version}} ];then
             wget https://github.com/cisco/ChezScheme/releases/download/v${{inputs.chez_version}}/csv${{inputs.chez_version}}.tar.gz
             tar -xf csv${{inputs.chez_version}}.tar.gz
+            cd csv${{inputs.chez_version}}
+            ./configure --prefix=/usr/local
+            make
+          else
+            cd csv${{inputs.chez_version}}
           fi
-          cd csv${{inputs.chez_version}}
-          ./configure --prefix=/usr/local
-          make
           sudo make install
 
     - uses: actions/cache/save@v5
@@ -125,10 +129,12 @@ runs:
         if [ ! -d chicken-${{inputs.chicken_version}} ]; then
           wget https://code.call-cc.org/releases/${{inputs.chicken_version}}/chicken-${{inputs.chicken_version}}.tar.gz
           tar -xf chicken-${{inputs.chicken_version}}.tar.gz
+          cd chicken-${{inputs.chicken_version}}
+          ./configure --prefix=/usr/local
+          make
+        else
+          cd chicken-${{inputs.chicken_version}}
         fi
-        cd chicken-${{inputs.chicken_version}}
-        ./configure --prefix=/usr/local
-        make
         sudo make install
 
     - uses: actions/cache/save@v5
@@ -154,9 +160,11 @@ runs:
           if [ ! -d cyclone-bootstrap ]; then
             wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v${{inputs.cyclone_version}}.tar.gz
             tar -xf v${{inputs.cyclone_version}}.tar.gz
+            cd cyclone-bootstrap-${{inputs.cyclone_version}}
+            make
+          else
+            cd cyclone-bootstrap-${{inputs.cyclone_version}}
           fi
-          cd cyclone-bootstrap-${{inputs.cyclone_version}}
-          make
           sudo make install
 
     - uses: actions/cache/save@v5
@@ -180,9 +188,11 @@ runs:
       run: |
         if [ ! -d foment ]; then
           git clone https://github.com/leftmike/foment.git --depth=1
+          cd foment/unix
+          make
+        else
+          cd foment/unix
         fi
-        cd foment/unix
-        make
         sudo make install
 
     - uses: actions/cache/save@v5
