@@ -45,6 +45,7 @@ runs:
 
     # Capy
     - uses: actions/cache/restore@v5
+      if: inputs.COMPILE_R7RS == 'capyscheme'
       id: capy-restore
       with:
         path: /opt/capy
@@ -64,6 +65,7 @@ runs:
           sudo ln -sf /opt/capy/capy /usr/local/bin/capy
 
     - uses: actions/cache/save@v5
+      if: inputs.COMPILE_R7RS == 'capyscheme'
       id: capy-save
       with:
         path: /opt/capy
@@ -71,6 +73,7 @@ runs:
 
     # Chez
     - uses: actions/cache/restore@v5
+      if: inputs.COMPILE_R7RS == 'chezscheme'
       id: chez-restore
       with:
         path: /opt/chez
@@ -92,6 +95,7 @@ runs:
           sudo make install
 
     - uses: actions/cache/save@v5
+      if: inputs.COMPILE_R7RS == 'chezscheme'
       id: chez-save
       with:
         path: /opt/chez
@@ -99,6 +103,7 @@ runs:
 
     # Chicken
     - uses: actions/cache/restore@v5
+      if: inputs.COMPILE_R7RS == 'chicken'
       id: chicken-restore
       with:
         path: /opt/chicken
@@ -120,6 +125,7 @@ runs:
         sudo make install
 
     - uses: actions/cache/save@v5
+      if: inputs.COMPILE_R7RS == 'chicken'
       id: chicken-save
       with:
         path: /opt/chicken
@@ -127,6 +133,7 @@ runs:
 
     # Cyclone
     - uses: actions/cache/restore@v5
+      if: inputs.COMPILE_R7RS == 'chicken'
       id: cyclone-restore
       with:
         path: /opt/cyclone
@@ -146,6 +153,7 @@ runs:
           sudo make install
 
     - uses: actions/cache/save@v5
+      if: inputs.COMPILE_R7RS == 'chicken'
       id: cyclone-save
       with:
         path: /opt/cyclone
@@ -153,6 +161,7 @@ runs:
 
     # Foment
     - uses: actions/cache/restore@v5
+      if: inputs.COMPILE_R7RS == 'foment'
       id: foment-restore
       with:
         path: /opt/foment
@@ -170,6 +179,7 @@ runs:
         sudo make install
 
     - uses: actions/cache/save@v5
+      if: inputs.COMPILE_R7RS == 'foment'
       id: foment-save
       with:
         path: /opt/foment
