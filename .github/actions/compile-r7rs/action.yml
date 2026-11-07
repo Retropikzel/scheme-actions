@@ -88,10 +88,10 @@ runs:
           sudo make install
 
     - uses: actions/cache/save@v5
-      id: capy-save
+      id: chez-save
       with:
-        path: /opt/capy
-        key: capy
+        path: /opt/chez
+        key: chez
 
     # Chicken
     - uses: actions/cache/restore@v5
