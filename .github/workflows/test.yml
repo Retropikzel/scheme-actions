@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
-      - id: Install test dependencies
+      - name: Install test dependencies
         uses: ./.github/actions/chibi-ubuntu
       - name: test
         run: |
