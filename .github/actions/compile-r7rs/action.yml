@@ -353,7 +353,7 @@ runs:
         mkdir -p /opt/ironscheme
         cd /opt/ironscheme
         if [ ! -d IronScheme ]; then
-          git clone git clone https://github.com/IronScheme/IronScheme.git -b 1.1.650 --recurse-submodules
+          git clone https://github.com/IronScheme/IronScheme.git -b 1.1.650 --recurse-submodules
           cd IronScheme/IronScheme
           sh build.sh
           sh package.sh
