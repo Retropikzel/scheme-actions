@@ -239,10 +239,10 @@ runs:
           tar -xf Gauche-${{inputs.gauche_version}}.tgz
           cd Gauche-${{inputs.gauche_version}}
           ./configure
-          make -j 8
         else
           cd Gauche-${{inputs.gauche_version}}
         fi
+        make -j 8
         sudo make install
 
     - uses: actions/cache/save@v5
@@ -298,7 +298,7 @@ runs:
         path: /opt/guile
         key: guile
 
-    - name: Install guile (3.0.10)
+    - name: Install guile (${{inputs.guile_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
       shell: sh
       run: |
