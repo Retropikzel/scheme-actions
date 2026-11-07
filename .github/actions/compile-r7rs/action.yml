@@ -46,14 +46,14 @@ runs:
 
     # Capy
     - uses: actions/cache/restore@v5
-      if: "${{ inputs.COMPILE_R7RS }} == 'capyscheme'"
+      if: inputs.COMPILE_R7RS == 'capyscheme'
       id: capy-restore
       with:
         path: /opt/capy
         key: capy
 
     - name: Install capy (${{inputs.capy_version}})
-      if: "${{ inputs.COMPILE_R7RS }} == 'capyscheme'"
+      if: inputs.COMPILE_R7RS == 'capyscheme'
       shell: sh
       run: |
           mkdir -p /opt/capy
@@ -66,7 +66,7 @@ runs:
           sudo ln -sf /opt/capy/capy /usr/local/bin/capy
 
     - uses: actions/cache/save@v5
-      if: "${{ inputs.COMPILE_R7RS }} == 'capyscheme'"
+      if: inputs.COMPILE_R7RS == 'capyscheme'
       id: capy-save
       with:
         path: /opt/capy
@@ -74,29 +74,29 @@ runs:
 
     # Chez
     - uses: actions/cache/restore@v5
-      if: "${{ inputs.COMPILE_R7RS }} == 'chezscheme'"
+      if: inputs.COMPILE_R7RS == 'chezscheme'
       id: chez-restore
       with:
         path: /opt/chez
         key: chez
 
     - name: Install chez (${{inputs.chez_version}})
-      if: "${{ inputs.COMPILE_R7RS }} == 'chezscheme'"
+      if: inputs.COMPILE_R7RS == 'chezscheme'
       shell: sh
       run: |
           mkdir -p /opt/chez
           cd /opt/chez
-          if [ ! -d csv${chez_version} ];then
-            wget https://github.com/cisco/ChezScheme/releases/download/v${chez_version}/csv${chez_version}.tar.gz
-            tar -xf csv${chez_version}.tar.gz
+          if [ ! -d csv${{inputs.chez_version}} ];then
+            wget https://github.com/cisco/ChezScheme/releases/download/v${{inputs.chez_version}}/csv${{inputs.chez_version}}.tar.gz
+            tar -xf csv${{inputs.chez_version}}.tar.gz
           fi
-          cd csv${chez_version}
+          cd csv${{inputs.chez_version}}
           ./configure --prefix=/usr/local
           make
           sudo make install
 
     - uses: actions/cache/save@v5
-      if: "${{ inputs.COMPILE_R7RS }} == 'chezscheme'"
+      if: inputs.COMPILE_R7RS == 'chezscheme'
       id: chez-save
       with:
         path: /opt/chez
@@ -104,14 +104,14 @@ runs:
 
     # Chicken
     - uses: actions/cache/restore@v5
-      if: "${{ inputs.COMPILE_R7RS }} == 'chicken'"
+      if: inputs.COMPILE_R7RS == 'chicken'
       id: chicken-restore
       with:
         path: /opt/chicken
         key: chicken
 
     - name: Install chicken (${{inputs.chicken_version}})
-      if: "${{ inputs.COMPILE_R7RS }} == 'chicken'"
+      if: inputs.COMPILE_R7RS == 'chicken'
       shell: sh
       run: |
         mkdir -p /opt/chicken
@@ -126,7 +126,7 @@ runs:
         sudo make install
 
     - uses: actions/cache/save@v5
-      if: "${{ inputs.COMPILE_R7RS }} == 'chicken'"
+      if: inputs.COMPILE_R7RS == 'chicken'
       id: chicken-save
       with:
         path: /opt/chicken
@@ -134,27 +134,27 @@ runs:
 
     # Cyclone
     - uses: actions/cache/restore@v5
-      if: "${{ inputs.COMPILE_R7RS }} == 'cyclone'"
+      if: inputs.COMPILE_R7RS == 'cyclone'
       id: cyclone-restore
       with:
         path: /opt/cyclone
         key: cyclone
 
     - name: Install cyclone (${{inputs.cyclone_version}})
-      if: "${{ inputs.COMPILE_R7RS }} == 'cyclone'"
+      if: inputs.COMPILE_R7RS == 'cyclone'
       shell: sh
       run: |
           sudo apt-get install -y libtommath-dev libck-dev
           if [ ! -d cyclone-bootstrap ]; then
-            wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v${cyclone_version}.tar.gz
-            tar -xf v${cyclone_version}.tar.gz
+            wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v${{inputs.cyclone_version}}.tar.gz
+            tar -xf v${{cyclone_version}}.tar.gz
           fi
-          cd cyclone-bootstrap-${cyclone_version}
+          cd cyclone-bootstrap-${{inputs.cyclone_version}}
           make
           sudo make install
 
     - uses: actions/cache/save@v5
-      if: "${{ inputs.COMPILE_R7RS }} == 'cyclone'"
+      if: inputs.COMPILE_R7RS == 'chicken'
       id: cyclone-save
       with:
         path: /opt/cyclone
@@ -162,14 +162,14 @@ runs:
 
     # Foment
     - uses: actions/cache/restore@v5
-      if: "${{ inputs.COMPILE_R7RS }} == 'foment'"
+      if: inputs.COMPILE_R7RS == 'foment'
       id: foment-restore
       with:
         path: /opt/foment
         key: foment
 
     - name: Install foment (${{inputs.foment_version}})
-      if: "${{ inputs.COMPILE_R7RS }} == 'foment'"
+      if: inputs.COMPILE_R7RS == 'foment'
       shell: sh
       run: |
         if [ ! -d foment ]; then
@@ -180,7 +180,7 @@ runs:
         sudo make install
 
     - uses: actions/cache/save@v5
-      if: "${{ inputs.COMPILE_R7RS }} == 'foment'"
+      if: inputs.COMPILE_R7RS == 'foment'
       id: foment-save
       with:
         path: /opt/foment
