@@ -34,6 +34,12 @@ inputs:
   ironscheme_version:
     default: 3.0.10
     type: string
+  kawa_version:
+    default: head
+    type: string
+  loko_version:
+    default: 0.13.0
+    type: string
 runs:
   using: composite
   steps:
@@ -393,6 +399,37 @@ runs:
       with:
         path: /opt/kawa
         key: kawa
+
+    # Loko
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'loko' }}
+      id: loko-restore
+      with:
+        path: /opt/loko
+        key: loko
+
+    - name: Install loko (${{inputs.loko_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'loko' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/loko
+        cd /opt/loko
+        if [ ! -d loko ]; then
+          wget https://scheme.fail/releases/loko-${{inputs.loko_version}}.tar.gz
+          tar -xf loko-${{inputs.loko_version}}.tar.gz
+          cd loko-${{inputs.loko_version}}
+          make
+        else
+          cd loko
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'loko' }}
+      id: loko-save
+      with:
+        path: /opt/loko
+        key: loko
 
     # Misc
     - name: Install compile-r7rs
