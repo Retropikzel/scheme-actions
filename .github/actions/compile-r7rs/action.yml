@@ -62,7 +62,7 @@ inputs:
     default: 0.12.34
     type: string
   stklos_version:
-    default: 0.26
+    default: 26.0
     type: string
   tr7_version:
     default: 2.0.19
@@ -274,11 +274,11 @@ runs:
           wget https://github.com/shirok/Gauche/releases/download/release${file_version}/Gauche-${{inputs.gauche_version}}.tgz
           tar -xf Gauche-${{inputs.gauche_version}}.tgz
           cd Gauche-${{inputs.gauche_version}}
-          ./configure
+          ./configure --prefix=/usr/local
+          make -j 4
         else
           cd Gauche-${{inputs.gauche_version}}
         fi
-        make -j 4
         sudo make install
 
     - uses: actions/cache/save@v5
@@ -476,11 +476,11 @@ runs:
           git clone https://github.com/yamacir-kit/meevax.git --branch=release-candidate #--branch=v${{inputs.meevax_version}}
           cd meevax
           CC=gcc cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .
-          make -j 4
+          make CC=clang CXX=clang++ -j 4 all
         else
           cd meevax
         fi
-        sudo make install
+        sudo make CC=clang CXX=clang++ install
 
     - uses: actions/cache/save@v5
       if: ${{ inputs.COMPILE_R7RS  == 'meevax' }}
@@ -570,13 +570,13 @@ runs:
         cd /opt/racket
         if [ ! -d racket ]; then
           wget https://download.racket-lang.org/releases/${{inputs.racket_version}}/installers/racket-minimal-${{inputs.racket_version}}-src.tgz
-          tar -xf racket-minimal-${{inputs.racket_version}}.tar.gz
-          cd racket-minimal-${{inputs.mosh_version}}
+          tar -xf racket-minimal-${{inputs.racket_version}}-src.tar.gz
+          cd racket-${{inputs.mosh_version}}/src
           ./configure --prefix=/usr/local
           make -j 4
           raco pkg install --auto r6rs r7rs
         else
-          cd racket
+          cd racket-${{inputs.racket_version}}/src
         fi
         sudo make install
 
@@ -599,6 +599,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
       shell: sh
       run: |
+        sudo apt install -y libgc-dev
         mkdir -p /opt/sagittarius
         cd /opt/sagittarius
         if [ ! -d  sagittarius ]; then
@@ -691,7 +692,7 @@ runs:
         mkdir -p /opt/stklos
         cd /opt/stklos
         if [ ! -d stklos ]; then
-          wget https://github.com/egallesio/STklos/archive/refs/tags/version-26.0.tar.gz
+          wget https://github.com/egallesio/STklos/archive/refs/tags/version-${{inputs.stklos_version}}.tar.gz
           tar -xg version-${{inputs.stklos_version}}.tar.gz
           cd STklos-version-${{inputs.stklos_version}}
           ./configure --prefix=/usr/local
@@ -723,7 +724,7 @@ runs:
         mkdir -p /opt/tr7
         cd /opt/tr7
         if [ ! -d tr7 ]; then
-          git clone https://gitlab.com/jobol/tr7.git --branch=${{inputs.tr7_version}}
+          git clone https://gitlab.com/jobol/tr7.git --branch=v${{inputs.tr7_version}}
           cd tr7
           make -j 4
         else
@@ -751,17 +752,20 @@ runs:
       shell: sh
       run: |
         sudo apt install -y clang-19 clang-tools-19 libgmp-dev libffi-dev
+        sudo update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-19 50
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 50
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 50
         mkdir -p /opt/ypsilon
         cd /opt/ypsilon
         if [ ! -d ypsilon ]; then
           git clone https://github.com/fujita-y/ypsilon.git --depth 1
           cd ypsilon
-          CC=clang-19 CXX=clang++-19 cmake -DCMAKE_BUILD_TYPE=Release .
-          CC=clang-19 CXX=clang++-19 cmake --build .
+          CC=clang CXX=clang++ cmake -DCMAKE_BUILD_TYPE=Release .
+          CC=clang CXX=clang++ cmake --build .
         else
           cd ypsilon
         fi
-        sudo CC=clang-19 CXX=clang++-19 cmake --install .
+        sudo CC=clang CXX=clang++ cmake --install .
 
     - uses: actions/cache/save@v5
       if: ${{ inputs.COMPILE_R7RS  == 'ypsilon' }}
