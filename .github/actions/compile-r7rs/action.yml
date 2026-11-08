@@ -53,7 +53,7 @@ inputs:
     default: 9.3
     type: string
   sagittarius_version:
-    default: 0.9.15
+    default: 0.9.14
     type: string
   skint_version:
     default: 0.8.5
@@ -82,7 +82,7 @@ runs:
           /usr/local/lib/libchibi-scheme.so.0
           /usr/local/lib/libchibi-scheme.so.0.12.0
           /usr/local/share/chibi
-        key: chibi
+        key: chibi-${{inputs.COMPILE_R7RS}}
 
     - name: Install chibi (${{ inputs.chibi_version }})
       shell: sh
@@ -106,7 +106,7 @@ runs:
           /usr/local/lib/libchibi-scheme.so.0
           /usr/local/lib/libchibi-scheme.so.0.12.0
           /usr/local/share/chibi
-        key: chibi
+        key: chibi-${{inputs.COMPILE_R7RS}}
 
     # Capy
     - uses: actions/cache/restore@v5
@@ -580,7 +580,7 @@ runs:
         if [ ! -d racket ]; then
           wget https://download.racket-lang.org/releases/${{inputs.racket_version}}/installers/racket-minimal-${{inputs.racket_version}}-src.tgz
           tar -xf racket-minimal-${{inputs.racket_version}}-src.tgz
-          mv racket* racket
+          mv racket-${{inputs.racket_version}} racket
           cd racket/src
           ./configure --prefix=/usr/local
           make -j 4
