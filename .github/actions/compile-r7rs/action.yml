@@ -75,7 +75,7 @@ runs:
       id: chibi-restore
       with:
         path: /opt/chibi
-        key: chibi-${{inputs.COMPILE_R7RS}}
+        key: chibi
 
     - name: Install chibi (${{ inputs.chibi_version }})
       shell: sh
@@ -94,7 +94,7 @@ runs:
       id: chibi-save
       with:
         path: /opt/chibi
-        key: chibi-${{inputs.COMPILE_R7RS}}
+        key: chibi
 
     - uses: actions/cache/restore@v5
       id: restore
