@@ -49,6 +49,24 @@ inputs:
   mosh_version:
     default: 0.2.9-rc1
     type: string
+  racket_version:
+    default: 9.3
+    type: string
+  sagittarius_version:
+    default: 0.9.15
+    type: string
+  skint_version:
+    default: 0.8.5
+    type: string
+  stak_version:
+    default: 0.12.34
+    type: string
+  stklos_version:
+    default: 0.26
+    type: string
+  tr7_version:
+    default: 2.0.19
+    type: string
 runs:
   using: composite
   steps:
@@ -535,6 +553,222 @@ runs:
       with:
         path: /opt/mosh
         key: mosh
+
+    # Racket
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'racket' }}
+      id: racket-restore
+      with:
+        path: /opt/racket
+        key: racket
+
+    - name: Install racket (${{inputs.racket_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'racket' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/racket
+        cd /opt/racket
+        if [ ! -d racket ]; then
+          wget https://download.racket-lang.org/releases/${{inputs.racket_version}}/installers/racket-minimal-${{inputs.racket_version}}-src.tgz
+          tar -xf racket-minimal-${{inputs.racket_version}}.tar.gz
+          cd racket-minimal-${{inputs.mosh_version}}
+          ./configure --prefix=/usr/local
+          make -j 4
+          raco pkg install --auto r6rs r7rs
+        else
+          cd racket
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'racket' }}
+      id: racket-save
+      with:
+        path: /opt/racket
+        key: racket
+
+    # Sagittarius
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
+      id: sagittarius-restore
+      with:
+        path: /opt/sagittarius
+        key: sagittarius
+
+    - name: Install sagittarius (${{inputs.sagittarius_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/sagittarius
+        cd /opt/sagittarius
+        if [ ! -d  sagittarius ]; then
+          wget https://github.com/ktakashi/sagittarius-scheme/releases/download/v${{inputs.sagittarius_version}}/sagittarius-${{inputs.sagittarius_version}}.tar.gz
+          tar -xf sagittarius-${{inputs.sagittarius_version}}.tar.gz
+          cd sagittarius-${{inputs.sagittarius_version}}
+          cmake . -DCMAKE_INSTALL_PREFIX=/usr/local
+          make -j 4
+        else
+          cd sagittarius
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
+      id: sagittarius-save
+      with:
+        path: /opt/sagittarius
+        key: sagittarius
+
+    # Skint
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'skint' }}
+      id: skint-restore
+      with:
+        path: /opt/skint
+        key: skint
+
+    - name: Install skint (${{inputs.skint_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'skint' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/skint
+        cd /opt/skint
+        if [ ! -d  skint ]; then
+          git clone https://github.com/false-schemers/skint.git --branch=v${{inputs.skint_version}}
+          cd skint
+          make -j 4
+        else
+          cd skint
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'skint' }}
+      id: skint-save
+      with:
+        path: /opt/skint
+        key: skint
+
+    # Stak
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'stak' }}
+      id: stak-restore
+      with:
+        path: /opt/stak
+        key: stak
+
+    - name: Install stak (${{inputs.stak_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'stak' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/stak
+        cd /opt/stak
+        if [ ! -f stak ]; then
+          wget https://github.com/raviqqe/stak/releases/download/v${{inputs.stak_version}}/stak_${{inputs.stak_version}}_linux_amd64.tar.gz
+          tar -xf stak_${{inputs.stak_version}}_linux_amd64.tar.gz
+        fi
+        sudo cp stak stak-compile stak-interpret stak-repl /usr/local/bin/
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'stak' }}
+      id: stak-save
+      with:
+        path: /opt/stak
+        key: stak
+
+    # Stklos
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'stklos' }}
+      id: stklos-restore
+      with:
+        path: /opt/stklos
+        key: stklos
+
+    - name: Install stklos (${{inputs.stklos_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'stklos' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/stklos
+        cd /opt/stklos
+        if [ ! -d stklos ]; then
+          wget https://github.com/egallesio/STklos/archive/refs/tags/version-26.0.tar.gz
+          tar -xg version-${{inputs.stklos_version}}.tar.gz
+          cd STklos-version-${{inputs.stklos_version}}
+          ./configure --prefix=/usr/local
+          make -j 4
+        else
+          cd stklos
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'stklos' }}
+      id: stklos-save
+      with:
+        path: /opt/stklos
+        key: stklos
+
+    # tr7
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'tr7' }}
+      id: tr7-restore
+      with:
+        path: /opt/tr7
+        key: tr7
+
+    - name: Install tr7 (${{inputs.tr7_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'tr7' }}
+      shell: sh
+      run: |
+        mkdir -p /opt/tr7
+        cd /opt/tr7
+        if [ ! -d tr7 ]; then
+          git clone https://gitlab.com/jobol/tr7.git --branch=${{inputs.tr7_version}}
+          cd tr7
+          make -j 4
+        else
+          cd tr7
+        fi
+        sudo make install
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'tr7' }}
+      id: tr7-save
+      with:
+        path: /opt/tr7
+        key: tr7
+
+    # ypsilon
+    - uses: actions/cache/restore@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'ypsilon' }}
+      id: ypsilon-restore
+      with:
+        path: /opt/ypsilon
+        key: ypsilon
+
+    - name: Install ypsilon (${{inputs.ypsilon_version}})
+      if: ${{ inputs.COMPILE_R7RS  == 'ypsilon' }}
+      shell: sh
+      run: |
+        sudo apt install -y clang-19 clang-tools-19 libgmp-dev libffi-dev
+        mkdir -p /opt/ypsilon
+        cd /opt/ypsilon
+        if [ ! -d ypsilon ]; then
+          git clone https://github.com/fujita-y/ypsilon.git --depth 1
+          cd ypsilon
+          CC=clang-19 CXX=clang++-19 cmake -DCMAKE_BUILD_TYPE=Release .
+          CC=clang-19 CXX=clang++-19 cmake --build .
+        else
+          cd ypsilon
+        fi
+        sudo CC=clang-19 CXX=clang++-19 cmake --install .
+
+    - uses: actions/cache/save@v5
+      if: ${{ inputs.COMPILE_R7RS  == 'ypsilon' }}
+      id: ypsilon-save
+      with:
+        path: /opt/ypsilon
+        key: ypsilon
 
     # Misc
     - name: Install compile-r7rs
