@@ -367,6 +367,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'racket' }}
       shell: sh
       run: |
+        sudo apt install -y chezscheme
         mkdir -p /opt/racket
         cd /opt/racket
         if [ ! -d racket ]; then
@@ -374,7 +375,7 @@ runs:
           tar -xf racket-minimal-${{inputs.racket_version}}-src.tgz
           mv racket-${{inputs.racket_version}} racket
           cd racket/src
-          ./configure --prefix=/usr/local --enable-pkgs=r6rs,r7rs
+          ./configure --prefix=/usr/local --enable-scheme=/usr/bin/chezscheme --enable-pkgs=r6rs,r7rs
           make -j 4
         else
           cd racket/src
