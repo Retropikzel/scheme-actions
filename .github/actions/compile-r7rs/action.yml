@@ -78,6 +78,7 @@ runs:
           /usr/local/bin/chibi-scheme
           /usr/local/bin/snow-chibi
           /usr/local/lib/chibi
+          /usr/local/lib/libchibi-scheme.so
           /usr/local/lib/libchibi-scheme.so.0
           /usr/local/share/chibi
         key: chibi
@@ -100,6 +101,7 @@ runs:
           /usr/local/bin/chibi-scheme
           /usr/local/bin/snow-chibi
           /usr/local/lib/chibi
+          /usr/local/lib/libchibi-scheme.so
           /usr/local/lib/libchibi-scheme.so.0
           /usr/local/share/chibi
         key: chibi
