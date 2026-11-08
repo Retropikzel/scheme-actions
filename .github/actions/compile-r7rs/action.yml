@@ -74,14 +74,7 @@ runs:
     - uses: actions/cache/restore@v5
       id: chibi-restore
       with:
-        path: |
-          /usr/local/bin/chibi-scheme
-          /usr/local/bin/snow-chibi
-          /usr/local/lib/chibi
-          /usr/local/lib/libchibi-scheme.so
-          /usr/local/lib/libchibi-scheme.so.0
-          /usr/local/lib/libchibi-scheme.so.0.12.0
-          /usr/local/share/chibi
+        path: /opt/chibi
         key: chibi-${{inputs.COMPILE_R7RS}}
 
     - name: Install chibi (${{ inputs.chibi_version }})
@@ -91,21 +84,16 @@ runs:
           git clone https://github.com/ashinn/chibi-scheme.git --depth=1
           cd chibi-scheme
           make -j 4 # assumes GNUMake
-          sudo make -j 4 install
+        else
+          cd chibi-scheme
         fi
+        sudo make -j 4 install
         mkdir -p ~/.snow && echo "()" > ~/.snow/config.scm
 
     - uses: actions/cache/save@v5
       id: chibi-save
       with:
-        path: |
-          /usr/local/bin/chibi-scheme
-          /usr/local/bin/snow-chibi
-          /usr/local/lib/chibi
-          /usr/local/lib/libchibi-scheme.so
-          /usr/local/lib/libchibi-scheme.so.0
-          /usr/local/lib/libchibi-scheme.so.0.12.0
-          /usr/local/share/chibi
+        path: /opt/chibi
         key: chibi-${{inputs.COMPILE_R7RS}}
 
     - uses: actions/cache/restore@v5
