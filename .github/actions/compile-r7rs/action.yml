@@ -388,11 +388,11 @@ runs:
           tar -xf sagittarius-${{inputs.sagittarius_version}}.tar.gz
           cd sagittarius-${{inputs.sagittarius_version}}
           CC=gcc cmake . -DCMAKE_INSTALL_PREFIX=/usr/local
-          make CC=gcc-14 -j 4
+          make CC=clang
         else
           cd sagittarius
         fi
-        sudo make CC=gcc-14 install
+        sudo make CC=clang install
     # Skint
     - name: Install skint (${{inputs.skint_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'skint' }}
