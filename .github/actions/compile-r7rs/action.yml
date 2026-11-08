@@ -82,7 +82,7 @@ runs:
       run: |
         mkdir -p /opt/chibi
         cd /opt/chibi
-        if [ ! -f /usr/local/bin/chibi-scheme ]; then
+        if [ ! -d chibi-scheme ]; then
           git clone https://github.com/ashinn/chibi-scheme.git --depth=1
           cd chibi-scheme
           make -j 4 # assumes GNUMake
