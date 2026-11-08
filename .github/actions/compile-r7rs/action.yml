@@ -370,9 +370,8 @@ runs:
           tar -xf racket-minimal-${{inputs.racket_version}}-src.tgz
           mv racket-${{inputs.racket_version}} racket
           cd racket/src
-          ./configure --prefix=/usr/local
+          ./configure --prefix=/usr/local --enable-pkgs=r6rs,r7rs
           make -j 4
-          raco pkg install --auto r6rs r7rs
         else
           cd racket/src
         fi
