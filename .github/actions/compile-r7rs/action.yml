@@ -108,14 +108,13 @@ runs:
           /usr/local/share/chibi
         key: chibi-${{inputs.COMPILE_R7RS}}
 
-    # Capy
     - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'capyscheme' }}
-      id: capy-restore
+      id: restore
       with:
-        path: /opt/capy
-        key: capy
+        path: /opt/${{inputs.COMPILE_R7RS}}
+        key: ${{inputs.COMPILE_R7RS}}
 
+    # Capy
     - name: Install capy (${{inputs.capy_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'capyscheme' }}
       shell: sh
@@ -128,21 +127,7 @@ runs:
           fi
           sudo ln -sf /opt/capy/${{inputs.capy_version}}/capy /usr/bin/capy
 
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'capyscheme' }}
-      id: capy-save
-      with:
-        path: /opt/capy
-        key: capy
-
     # Chez
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'chezscheme' }}
-      id: chez-restore
-      with:
-        path: /opt/chez
-        key: chez
-
     - name: Install chez (${{inputs.chez_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'chezscheme' }}
       shell: sh
@@ -159,22 +144,7 @@ runs:
             cd csv${{inputs.chez_version}}
           fi
           sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'chezscheme' }}
-      id: chez-save
-      with:
-        path: /opt/chez
-        key: chez
-
     # Chicken
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'chicken' }}
-      id: chicken-restore
-      with:
-        path: /opt/chicken
-        key: chicken
-
     - name: Install chicken (${{inputs.chicken_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'chicken' }}
       shell: sh
@@ -191,22 +161,7 @@ runs:
           cd chicken-${{inputs.chicken_version}}
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'chicken' }}
-      id: chicken-save
-      with:
-        path: /opt/chicken
-        key: chicken
-
     # Cyclone
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'cyclone' }}
-      id: cyclone-restore
-      with:
-        path: /opt/cyclone
-        key: cyclone
-
     - name: Install cyclone (${{inputs.cyclone_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'cyclone' }}
       shell: sh
@@ -223,22 +178,7 @@ runs:
             cd cyclone-bootstrap-${{inputs.cyclone_version}}
           fi
           sudo make CC=gcc-14 install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'cyclone' }}
-      id: cyclone-save
-      with:
-        path: /opt/cyclone
-        key: cyclone
-
     # Foment
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'foment' }}
-      id: foment-restore
-      with:
-        path: /opt/foment
-        key: foment
-
     - name: Install foment (${{inputs.foment_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'foment' }}
       shell: sh
@@ -253,22 +193,7 @@ runs:
           cd foment/unix
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'foment' }}
-      id: foment-save
-      with:
-        path: /opt/foment
-        key: foment
-
     # Gauche
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'gauche' }}
-      id: gauche-restore
-      with:
-        path: /opt/gauche
-        key: gauche
-
     - name: Install gauche (${{inputs.gauche_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'gauche' }}
       shell: sh
@@ -286,22 +211,7 @@ runs:
           cd Gauche-${{inputs.gauche_version}}
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'gauche' }}
-      id: gauche-save
-      with:
-        path: /opt/gauche
-        key: gauche
-
     # Gambit
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'gambit' }}
-      id: gambit-restore
-      with:
-        path: /opt/gambit
-        key: gambit
-
     - name: Install gambit (${{inputs.gambit_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'gambit' }}
       shell: sh
@@ -324,22 +234,7 @@ runs:
           cd gambit-v${file_version}
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'gambit' }}
-      id: gambit-save
-      with:
-        path: /opt/gambit
-        key: gambit
-
     # Guile
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
-      id: guile-restore
-      with:
-        path: /opt/guile
-        key: guile
-
     - name: Install guile (${{inputs.guile_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
       shell: sh
@@ -369,22 +264,7 @@ runs:
           fi
           sudo make install
         fi
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
-      id: guile-save
-      with:
-        path: /opt/guile
-        key: guile
-
     # Ironscheme
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'ironscheme' }}
-      id: ironscheme-restore
-      with:
-        path: /opt/ironscheme
-        key: ironscheme
-
     - name: Install ironscheme (${{inputs.ironscheme_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'ironscheme' }}
       shell: sh
@@ -403,13 +283,6 @@ runs:
         dotnet tool install -g IronScheme.Tool --source bin/ --prerelease --allow-downgrade
 
     # Kawa
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'kawa' }}
-      id: kawa-restore
-      with:
-        path: /opt/kawa
-        key: kawa
-
     - name: Install kawa (${{inputs.kawa_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'kawa' }}
       shell: sh
@@ -426,22 +299,7 @@ runs:
           cd Kawa
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'kawa' }}
-      id: kawa-save
-      with:
-        path: /opt/kawa
-        key: kawa
-
     # Loko
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'loko' }}
-      id: loko-restore
-      with:
-        path: /opt/loko
-        key: loko
-
     - name: Install loko (${{inputs.loko_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'loko' }}
       shell: sh
@@ -457,22 +315,7 @@ runs:
           cd loko
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'loko' }}
-      id: loko-save
-      with:
-        path: /opt/loko
-        key: loko
-
     # Meevax
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'meevax' }}
-      id: meevax-restore
-      with:
-        path: /opt/meevax
-        key: meevax
-
     - name: Install meevax (${{inputs.meevax_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'meevax' }}
       shell: sh
@@ -488,22 +331,7 @@ runs:
           cd meevax
         fi
         sudo make CC=clang CXX=clang++ install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'meevax' }}
-      id: meevax-save
-      with:
-        path: /opt/meevax
-        key: meevax
-
     # MIT-Scheme
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'mit-scheme' }}
-      id: mit-scheme-restore
-      with:
-        path: /opt/mit-scheme
-        key: mit-scheme
-
     - name: Install mit-scheme (${{inputs.mit_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'mit-scheme' }}
       shell: sh
@@ -522,22 +350,7 @@ runs:
           cd mit-scheme-${{inputs.mit_version}}/src
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'mit-scheme' }}
-      id: mit-scheme-save
-      with:
-        path: /opt/mit-scheme
-        key: mit-scheme
-
     # Mosh
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'mosh' }}
-      id: mosh-restore
-      with:
-        path: /opt/mosh
-        key: mosh
-
     - name: Install mosh (${{inputs.mosh_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'mosh' }}
       shell: sh
@@ -555,22 +368,7 @@ runs:
           cd mosh
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'mosh' }}
-      id: mosh-save
-      with:
-        path: /opt/mosh
-        key: mosh
-
     # Racket
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'racket' }}
-      id: racket-restore
-      with:
-        path: /opt/racket
-        key: racket
-
     - name: Install racket (${{inputs.racket_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'racket' }}
       shell: sh
@@ -589,22 +387,7 @@ runs:
           cd racket
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'racket' }}
-      id: racket-save
-      with:
-        path: /opt/racket
-        key: racket
-
     # Sagittarius
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
-      id: sagittarius-restore
-      with:
-        path: /opt/sagittarius
-        key: sagittarius
-
     - name: Install sagittarius (${{inputs.sagittarius_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
       shell: sh
@@ -622,22 +405,7 @@ runs:
           cd sagittarius
         fi
         sudo make CC=gcc install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
-      id: sagittarius-save
-      with:
-        path: /opt/sagittarius
-        key: sagittarius
-
     # Skint
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'skint' }}
-      id: skint-restore
-      with:
-        path: /opt/skint
-        key: skint
-
     - name: Install skint (${{inputs.skint_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'skint' }}
       shell: sh
@@ -652,22 +420,7 @@ runs:
           cd skint
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'skint' }}
-      id: skint-save
-      with:
-        path: /opt/skint
-        key: skint
-
     # Stak
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'stak' }}
-      id: stak-restore
-      with:
-        path: /opt/stak
-        key: stak
-
     - name: Install stak (${{inputs.stak_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'stak' }}
       shell: sh
@@ -679,22 +432,7 @@ runs:
           tar -xf stak_${{inputs.stak_version}}_linux_amd64.tar.gz
         fi
         sudo cp stak stak-compile stak-interpret stak-repl /usr/local/bin/
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'stak' }}
-      id: stak-save
-      with:
-        path: /opt/stak
-        key: stak
-
     # Stklos
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'stklos' }}
-      id: stklos-restore
-      with:
-        path: /opt/stklos
-        key: stklos
-
     - name: Install stklos (${{inputs.stklos_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'stklos' }}
       shell: sh
@@ -711,22 +449,7 @@ runs:
           cd stklos
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'stklos' }}
-      id: stklos-save
-      with:
-        path: /opt/stklos
-        key: stklos
-
     # tr7
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'tr7' }}
-      id: tr7-restore
-      with:
-        path: /opt/tr7
-        key: tr7
-
     - name: Install tr7 (${{inputs.tr7_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'tr7' }}
       shell: sh
@@ -741,22 +464,7 @@ runs:
           cd tr7
         fi
         sudo make install
-
-    - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'tr7' }}
-      id: tr7-save
-      with:
-        path: /opt/tr7
-        key: tr7
-
     # ypsilon
-    - uses: actions/cache/restore@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'ypsilon' }}
-      id: ypsilon-restore
-      with:
-        path: /opt/ypsilon
-        key: ypsilon
-
     - name: Install ypsilon (${{inputs.ypsilon_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'ypsilon' }}
       shell: sh
@@ -778,11 +486,10 @@ runs:
         sudo CC=clang CXX=clang++ cmake --install .
 
     - uses: actions/cache/save@v5
-      if: ${{ inputs.COMPILE_R7RS  == 'ypsilon' }}
-      id: ypsilon-save
+      id: ${{inputs.COMPILE_R7RS}}-save
       with:
-        path: /opt/ypsilon
-        key: ypsilon
+        path: /opt/${{inputs.COMPILE_R7RS}}
+        key: ${{inputs.COMPILE_R7RS}}
 
     # Misc
     - name: Install compile-r7rs
