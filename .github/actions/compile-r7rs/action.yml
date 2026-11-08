@@ -53,7 +53,7 @@ inputs:
     default: 9.3
     type: string
   sagittarius_version:
-    default: 0.9.14
+    default: 0.9.15
     type: string
   skint_version:
     default: 0.8.5
@@ -388,11 +388,11 @@ runs:
           tar -xf sagittarius-${{inputs.sagittarius_version}}.tar.gz
           cd sagittarius-${{inputs.sagittarius_version}}
           CC=gcc cmake . -DCMAKE_INSTALL_PREFIX=/usr/local
-          make CC=gcc -j 4
+          make CC=gcc-14 -j 4
         else
           cd sagittarius
         fi
-        sudo make CC=gcc install
+        sudo make CC=gcc-14 install
     # Skint
     - name: Install skint (${{inputs.skint_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'skint' }}
