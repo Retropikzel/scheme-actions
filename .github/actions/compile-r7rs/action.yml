@@ -375,7 +375,7 @@ runs:
           tar -xf racket-minimal-${{inputs.racket_version}}-src.tgz
           mv racket-${{inputs.racket_version}} racket
           cd racket/src
-          ./configure --prefix=/usr/local --enable-scheme=/usr/bin/chezscheme --enable-pkgs=r6rs,r7rs
+          ./configure --prefix=/usr/local --enable-scheme=/usr/bin/chezscheme --enable-csonly --disable-wpo --enable-pkgs=r6rs r7rs
           make -j 4
         else
           cd racket/src
