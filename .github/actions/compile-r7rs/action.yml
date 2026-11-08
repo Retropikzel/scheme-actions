@@ -390,10 +390,11 @@ runs:
           cd IronScheme/IronScheme
           sh build.sh
           sh package.sh
+          sh nuget.sh
         else
           cd IronScheme/IronScheme
         fi
-        sh nuget.sh
+        dotnet tool install -g IronScheme.Tool --source bin/ --prerelease --allow-downgrade
 
     # Kawa
     - uses: actions/cache/restore@v5
@@ -506,6 +507,7 @@ runs:
         if [ ! -d mit-scheme ]; then
           sudo apt install -y mit-scheme
           wget https://ftp.gnu.org/gnu/mit-scheme/stable.pkg/${{inputs.mit_version}}/mit-scheme-${{inputs.mit_version}}.tar.gz
+          tar -xf mit-scheme-${{inputs.mit_version}}.tar.gz
           cd mit-scheme-${{inputs.mit_version}}
           ./configure
           make -j 4
@@ -570,7 +572,7 @@ runs:
         cd /opt/racket
         if [ ! -d racket ]; then
           wget https://download.racket-lang.org/releases/${{inputs.racket_version}}/installers/racket-minimal-${{inputs.racket_version}}-src.tgz
-          tar -xf racket-minimal-${{inputs.racket_version}}-src.tar.gz
+          tar -xf racket-minimal-${{inputs.racket_version}}-src.tgz
           cd racket-${{inputs.mosh_version}}/src
           ./configure --prefix=/usr/local
           make -j 4
@@ -599,7 +601,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
       shell: sh
       run: |
-        sudo apt install -y libgc-dev
+        sudo apt install -y libgc-dev libtomcrypt-dev
         mkdir -p /opt/sagittarius
         cd /opt/sagittarius
         if [ ! -d  sagittarius ]; then
@@ -751,7 +753,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'ypsilon' }}
       shell: sh
       run: |
-        sudo apt install -y clang-19 clang-tools-19 libgmp-dev libffi-dev
+        sudo apt install -y clang-19 lld-19 clang-tools-19 libgmp-dev libffi-dev
         sudo update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-19 50
         sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 50
         sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 50
