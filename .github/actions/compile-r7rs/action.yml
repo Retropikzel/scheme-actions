@@ -107,6 +107,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'capyscheme' }}
       shell: sh
       run: |
+          set -eux
           mkdir -p /opt/capy
           cd /opt/capy
           if [ ! -f capy ]; then
