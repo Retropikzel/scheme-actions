@@ -114,6 +114,7 @@ runs:
             tar -xf capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
           fi
           sudo ln -sf /opt/capy/capy /bin/capy
+          sudo chmod +x /bin/capy
 
     # Chez
     - name: Install chez (${{inputs.chez_version}})
@@ -372,7 +373,7 @@ runs:
           make -j 4
           raco pkg install --auto r6rs r7rs
         else
-          cd racket
+          cd racket/src
         fi
         sudo make install
     # Sagittarius
