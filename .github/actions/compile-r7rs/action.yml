@@ -80,6 +80,8 @@ runs:
     - name: Install chibi (${{ inputs.chibi_version }})
       shell: sh
       run: |
+        mkdir -p /opt/chibi
+        cd /opt/chibi
         if [ ! -f /usr/local/bin/chibi-scheme ]; then
           git clone https://github.com/ashinn/chibi-scheme.git --depth=1
           cd chibi-scheme
@@ -108,9 +110,9 @@ runs:
       shell: sh
       run: |
           set -eux
-          ls
           mkdir -p /opt/capy
           cd /opt/capy
+          ls
           if [ ! -f capy ]; then
             wget https://github.com/playX18/capyscheme/releases/download/v${{inputs.capy_version}}/capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
             tar -xf capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
