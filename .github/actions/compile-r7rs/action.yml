@@ -486,7 +486,7 @@ runs:
         sudo CC=clang CXX=clang++ cmake --install .
 
     - uses: actions/cache/save@v5
-      id: ${{inputs.COMPILE_R7RS}}-save
+      id: save
       with:
         path: /opt/${{inputs.COMPILE_R7RS}}
         key: ${{inputs.COMPILE_R7RS}}
