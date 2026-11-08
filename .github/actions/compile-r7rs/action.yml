@@ -75,7 +75,8 @@ runs:
       id: chibi-restore
       with:
         path: |
-          /usr/local/bin/chibi
+          /usr/local/bin/chibi-scheme
+          /usr/local/bin/snow-chibi
           /usr/local/lib/chibi
           /usr/local/lib/libchibi.so.0
           /usr/local/share/chibi
@@ -96,7 +97,8 @@ runs:
       id: chibi-save
       with:
         path: |
-          /usr/local/bin/chibi
+          /usr/local/bin/chibi-scheme
+          /usr/local/bin/snow-chibi
           /usr/local/lib/chibi
           /usr/local/lib/libchibi.so.0
           /usr/local/share/chibi
@@ -508,11 +510,12 @@ runs:
           sudo apt install -y mit-scheme
           wget https://ftp.gnu.org/gnu/mit-scheme/stable.pkg/${{inputs.mit_version}}/mit-scheme-${{inputs.mit_version}}.tar.gz
           tar -xf mit-scheme-${{inputs.mit_version}}.tar.gz
-          cd mit-scheme-${{inputs.mit_version}}
+          cd mit-scheme-${{inputs.mit_version}}/src
+          cp /usr/share/automake*/config.guess .
           ./configure
           make -j 4
         else
-          cd mit-scheme-${{inputs.mit_version}}
+          cd mit-scheme-${{inputs.mit_version}}/src
         fi
         sudo make install
 
@@ -573,12 +576,13 @@ runs:
         if [ ! -d racket ]; then
           wget https://download.racket-lang.org/releases/${{inputs.racket_version}}/installers/racket-minimal-${{inputs.racket_version}}-src.tgz
           tar -xf racket-minimal-${{inputs.racket_version}}-src.tgz
-          cd racket-${{inputs.mosh_version}}/src
+          mv racket* racket
+          cd racket/src
           ./configure --prefix=/usr/local
           make -j 4
           raco pkg install --auto r6rs r7rs
         else
-          cd racket-${{inputs.racket_version}}/src
+          cd racket
         fi
         sudo make install
 
@@ -608,12 +612,12 @@ runs:
           wget https://github.com/ktakashi/sagittarius-scheme/releases/download/v${{inputs.sagittarius_version}}/sagittarius-${{inputs.sagittarius_version}}.tar.gz
           tar -xf sagittarius-${{inputs.sagittarius_version}}.tar.gz
           cd sagittarius-${{inputs.sagittarius_version}}
-          cmake . -DCMAKE_INSTALL_PREFIX=/usr/local
-          make -j 4
+          CC=gcc cmake . -DCMAKE_INSTALL_PREFIX=/usr/local
+          make CC=gcc -j 4
         else
           cd sagittarius
         fi
-        sudo make install
+        sudo make CC=gcc install
 
     - uses: actions/cache/save@v5
       if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
