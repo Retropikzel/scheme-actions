@@ -380,7 +380,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
       shell: sh
       run: |
-        sudo apt install -y libgc-dev libtomcrypt-dev
+        sudo apt install -y libgc-dev libtomcrypt-dev libssl-dev libz-dev
         mkdir -p /opt/sagittarius
         cd /opt/sagittarius
         if [ ! -d  sagittarius ]; then
