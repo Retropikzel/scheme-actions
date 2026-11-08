@@ -80,6 +80,7 @@ runs:
     - name: Install chibi (${{ inputs.chibi_version }})
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/chibi
         cd /opt/chibi
         if [ ! -d chibi-scheme ]; then
@@ -109,40 +110,43 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'capyscheme' }}
       shell: sh
       run: |
-          set -eux
-          mkdir -p /opt/capy
-          cd /opt/capy
-          ls
-          if [ ! -f capy ]; then
-            wget https://github.com/playX18/capyscheme/releases/download/v${{inputs.capy_version}}/capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
-            tar -xf capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
-          fi
-          chmod +x capy
-          sudo ln -sf /opt/capy/capy /bin/capy
-          ls
+        set -eux
+        mkdir -p /opt/capy
+        cd /opt/capy
+        ls
+        if [ ! -f capy ]; then
+          wget https://github.com/playX18/capyscheme/releases/download/v${{inputs.capy_version}}/capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
+          tar -xf capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
+        fi
+        chmod +x capy
+        sudo ln -sf /opt/capy/capy /bin/capy
+        ls
 
     # Chez
     - name: Install chez (${{inputs.chez_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'chezscheme' }}
       shell: sh
       run: |
-          mkdir -p /opt/chez
-          cd /opt/chez
-          if [ ! -d csv${{inputs.chez_version}} ];then
-            wget https://github.com/cisco/ChezScheme/releases/download/v${{inputs.chez_version}}/csv${{inputs.chez_version}}.tar.gz
-            tar -xf csv${{inputs.chez_version}}.tar.gz
-            cd csv${{inputs.chez_version}}
-            ./configure --prefix=/usr/local --disable-x11 --disable-curses --disable-iconv
-            make
-          else
-            cd csv${{inputs.chez_version}}
-          fi
-          sudo make install
+        set -eux
+        mkdir -p /opt/chez
+        cd /opt/chez
+        if [ ! -d chez ];then
+          wget https://github.com/cisco/ChezScheme/releases/download/v${{inputs.chez_version}}/csv${{inputs.chez_version}}.tar.gz
+          tar -xf csv${{inputs.chez_version}}.tar.gz
+          mv csv${{inputs.chez_version}} chez
+          cd chez
+          ./configure --prefix=/usr/local --disable-x11 --disable-curses --disable-iconv
+          make
+        else
+          cd chez
+        fi
+        sudo make install
     # Chicken
     - name: Install chicken (${{inputs.chicken_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'chicken' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/chicken
         cd /opt/chicken
         if [ ! -d chicken-${{inputs.chicken_version}} ]; then
@@ -160,23 +164,25 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'cyclone' }}
       shell: sh
       run: |
-          mkdir -p /opt/cyclone
-          cd /opt/cyclone
-          sudo apt-get install -y libtommath-dev libck-dev
-          if [ ! -d cyclone-bootstrap ]; then
-            wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v${{inputs.cyclone_version}}.tar.gz
-            tar -xf v${{inputs.cyclone_version}}.tar.gz
-            cd cyclone-bootstrap-${{inputs.cyclone_version}}
-            make CC=gcc-14
-          else
-            cd cyclone-bootstrap-${{inputs.cyclone_version}}
-          fi
-          sudo make CC=gcc-14 install
+        set -eux
+        mkdir -p /opt/cyclone
+        cd /opt/cyclone
+        sudo apt-get install -y libtommath-dev libck-dev
+        if [ ! -d cyclone-bootstrap ]; then
+          wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v${{inputs.cyclone_version}}.tar.gz
+          tar -xf v${{inputs.cyclone_version}}.tar.gz
+          cd cyclone-bootstrap-${{inputs.cyclone_version}}
+          make CC=gcc-14
+        else
+          cd cyclone-bootstrap-${{inputs.cyclone_version}}
+        fi
+        sudo make CC=gcc-14 install
     # Foment
     - name: Install foment (${{inputs.foment_version}})
       if: ${{ inputs.COMPILE_R7RS  == 'foment' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/foment
         cd /opt/foment
         if [ ! -d foment ]; then
@@ -192,6 +198,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'gauche' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/gauche
         cd /opt/gauche
         if [ ! -d Gauche-${{inputs.gauche_version}} ]; then
@@ -210,6 +217,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'gambit' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/gambit
         cd /opt/gambit
         file_version=$(echo "${{inputs.gambit_version}}" | tr '.' '_')
@@ -233,6 +241,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'guile' }}
       shell: sh
       run: |
+        set -eux
         if [ "${{inputs.guile_version}}" = "3.0.10" ]; then
           sudo apt install -y guile-3.0
         else
@@ -263,6 +272,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'ironscheme' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/ironscheme
         cd /opt/ironscheme
         if [ ! -d IronScheme ]; then
@@ -281,6 +291,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'kawa' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/kawa
         cd /opt/kawa
         if [ ! -d Kawa ]; then
@@ -298,6 +309,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'loko' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/loko
         cd /opt/loko
         if [ ! -d loko ]; then
@@ -314,6 +326,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'meevax' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/meevax
         cd /opt/meevax
         if [ ! -d meevax ]; then
@@ -330,6 +343,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'mit-scheme' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/mit-scheme
         cd /opt/mit-scheme
         if [ ! -d mit-scheme ]; then
@@ -349,6 +363,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'mosh' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/mosh
         cd /opt/mosh
         sudo apt-get install -y libonig-dev
@@ -367,6 +382,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'racket' }}
       shell: sh
       run: |
+        set -eux
         sudo apt install -y chezscheme
         mkdir -p /opt/racket
         cd /opt/racket
@@ -386,6 +402,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'sagittarius' }}
       shell: sh
       run: |
+        set -eux
         sudo apt install -y libgc-dev libtomcrypt-dev libssl-dev libz-dev
         mkdir -p /opt/sagittarius
         cd /opt/sagittarius
@@ -404,6 +421,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'skint' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/skint
         cd /opt/skint
         if [ ! -d  skint ]; then
@@ -419,6 +437,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'stak' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/stak
         cd /opt/stak
         if [ ! -f stak ]; then
@@ -431,6 +450,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'stklos' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/stklos
         cd /opt/stklos
         if [ ! -d stklos ]; then
@@ -448,6 +468,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'tr7' }}
       shell: sh
       run: |
+        set -eux
         mkdir -p /opt/tr7
         cd /opt/tr7
         if [ ! -d tr7 ]; then
@@ -463,6 +484,7 @@ runs:
       if: ${{ inputs.COMPILE_R7RS  == 'ypsilon' }}
       shell: sh
       run: |
+        set -eux
         sudo apt install -y clang-19 lld-19 clang-tools-19 libgmp-dev libffi-dev
         sudo update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-19 50
         sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 50
@@ -488,4 +510,6 @@ runs:
     # Misc
     - name: Install compile-r7rs
       shell: sh
-      run: snow-chibi install --always-yes "(retropikzel compile-r7rs)"
+      run: |
+        set -eux
+        snow-chibi install --always-yes "(retropikzel compile-r7rs)"
