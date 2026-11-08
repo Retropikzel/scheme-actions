@@ -113,7 +113,7 @@ runs:
             wget https://github.com/playX18/capyscheme/releases/download/v${{inputs.capy_version}}/capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
             tar -xf capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
           fi
-          sudo ln -sf /opt/capy/${{inputs.capy_version}}/capy /usr/bin/capy
+          sudo ln -sf /opt/capy/capy /bin/capy
 
     # Chez
     - name: Install chez (${{inputs.chez_version}})
@@ -387,7 +387,7 @@ runs:
           wget https://github.com/ktakashi/sagittarius-scheme/releases/download/v${{inputs.sagittarius_version}}/sagittarius-${{inputs.sagittarius_version}}.tar.gz
           tar -xf sagittarius-${{inputs.sagittarius_version}}.tar.gz
           cd sagittarius-${{inputs.sagittarius_version}}
-          CC=gcc cmake . -DCMAKE_INSTALL_PREFIX=/usr/local
+          CC=clang cmake . -DCMAKE_INSTALL_PREFIX=/usr/local
           make CC=clang
         else
           cd sagittarius
