@@ -113,8 +113,8 @@ runs:
             wget https://github.com/playX18/capyscheme/releases/download/v${{inputs.capy_version}}/capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
             tar -xf capyscheme-${{inputs.capy_version}}-x86_64-unknown-linux-gnu.tar.gz
           fi
+          chmod +x capy
           sudo ln -sf /opt/capy/capy /bin/capy
-          sudo chmod +x /bin/capy
 
     # Chez
     - name: Install chez (${{inputs.chez_version}})
